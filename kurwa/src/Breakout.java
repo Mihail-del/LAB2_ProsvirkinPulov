@@ -2,7 +2,7 @@
  * File: Breakout.java
  * -------------------
  * Name: Mykhailo Pulov, Veronika Prosvirkin
- * Section Leader: Both
+ * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
  * Last update: 19:51
@@ -91,6 +91,18 @@ public class Breakout extends GraphicsProgram {
     }
 
     /** ============== APP CONFIGURATION ============== */
+    // main game
+    private void configureApp() {
+        setBackground(bgColor);
+        setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
+        setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
+        StartMenuEnabled = true;
+        header();
+        paddleSettings();
+        preview();
+    }
+
+    // start menu
     private void configureAppMenu() {
         setBackground(bgColor);
         setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
@@ -101,6 +113,7 @@ public class Breakout extends GraphicsProgram {
         preview();
     }
 
+    /** ============== PRESSED MOUSE ACTIONS ============== */
     public void mousePressed(MouseEvent e) {
         if(StartMenuEnabled) {
             if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
@@ -111,11 +124,14 @@ public class Breakout extends GraphicsProgram {
             }
         }
     }
+
+    /** ============== RELEASED MOUSE ACTIONS ============== */
     public void mouseReleased(MouseEvent e) {
         actionSlider = 0;
         System.out.println(0);
     }
 
+    /** ============== DRAGGED MOUSE ACTIONS ============== */
     public void mouseDragged(MouseEvent e) {
         if(StartMenuEnabled) {
             if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
@@ -141,8 +157,8 @@ public class Breakout extends GraphicsProgram {
 
 
 
-
-    /** ===== HEADER ===== */
+    /** ============== START MENU ============== */
+    /* ===== HEADER ===== */
     private void header(){
         GImage image = new GImage("images/gameSettings.png");
         double imageWidth = APPLICATION_WIDTH *0.8;
@@ -151,7 +167,7 @@ public class Breakout extends GraphicsProgram {
         add(image);
     }
 
-    /** ===== HEADER ===== */
+    /* ===== PADDLE SETTINGS AND PREVIEW ===== */
     private void paddleSettings(){
         GLabel paddleWidthLbl = new GLabel("Paddle width");
         paddleWidthLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
@@ -175,7 +191,7 @@ public class Breakout extends GraphicsProgram {
 
 
 
-    /** ===== PREVIEW ===== */
+    /* ===== PREVIEW ===== */
     private void preview(){
         gameFramePreviewer = new GRect(APPLICATION_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
