@@ -7,14 +7,14 @@ public class GSlider extends GCompound {
     GRect body;
     GOval ball;
 
-    public GSlider(double width, double height, double diameter) {
+    public GSlider(double width, double height, double diameter, double start) {
         this.body = new GRect(0, -height/2, width, height);
         this.body.setFilled(true);
         this.body.setFillColor(Breakout.sliderColor);
         this.body.setColor(Breakout.sliderColor);
         add(this.body);
 
-        this.ball = new GOval(- diameter/2.0, - diameter/2.0, diameter, diameter);
+        this.ball = new GOval(- diameter/2.0 + start + StartMenu.getSETTING_PADDING(), - diameter/2.0, diameter, diameter);
         this.ball.setFilled(true);
         this.ball.setFillColor(Breakout.sliderBallColor);
         this.ball.setColor(Breakout.sliderBallColor);

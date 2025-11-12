@@ -63,7 +63,10 @@ public class StartMenu extends GraphicsProgram {
     private int actionSlider = 0;
 
     GSlider sliderPaddleWidth;
-    GLabel paddleValueLbl;
+    GLabel paddleWidthValueLbl;
+
+
+
 
 
     // drawing the menu
@@ -97,8 +100,8 @@ public class StartMenu extends GraphicsProgram {
             if (actionSlider == 1) {
                 sliderPaddleWidth.sliderMove(e.getX(), 7);
                 PADDLE_WIDTH = (e.getX()-SETTING_PADDING)/2+10;
-                paddleValueLbl.setLabel(PADDLE_WIDTH+"");
-                paddleValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH-paddleValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
+                paddleWidthValueLbl.setLabel(PADDLE_WIDTH+"");
+                paddleWidthValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH- paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
             }
         }
     }
@@ -129,13 +132,13 @@ public class StartMenu extends GraphicsProgram {
         paddleWidthLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
         add(paddleWidthLbl);
 
-        paddleValueLbl = new GLabel("0");
-        paddleValueLbl.setFont("Monospased-"+(int) Math.round(SETTING_WIDTH*0.05));
-        paddleValueLbl.setColor(Breakout.fontColor);
-        paddleValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH-paddleValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
-        add(paddleValueLbl);
+        paddleWidthValueLbl = new GLabel(PADDLE_WIDTH+"");
+        paddleWidthValueLbl.setFont("Monospased-"+(int) Math.round(SETTING_WIDTH*0.05));
+        paddleWidthValueLbl.setColor(Breakout.fontColor);
+        paddleWidthValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH-paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
+        add(paddleWidthValueLbl);
 
-        sliderPaddleWidth = new GSlider(SETTING_WIDTH, 3, 14);
+        sliderPaddleWidth = new GSlider(SETTING_WIDTH, 3, 14, PADDLE_WIDTH);
         sliderPaddleWidth.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.22);
         add(sliderPaddleWidth);
     }
@@ -145,12 +148,14 @@ public class StartMenu extends GraphicsProgram {
 
 
 
-    /** ===== PREVIEV ===== */
+    /** ===== PREVIEW ===== */
     private void preview(){
         GRect gameFramePreviewer = new GRect(SETTING_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
         gameFramePreviewer.setFillColor(Breakout.bgColor);
         add(gameFramePreviewer);
+
+
 
     }
 
