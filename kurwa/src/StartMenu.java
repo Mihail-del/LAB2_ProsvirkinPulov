@@ -8,6 +8,7 @@
  * Last update: 15:09
  */
 
+import acm.graphics.GCompound;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GRect;
@@ -62,8 +63,12 @@ public class StartMenu extends GraphicsProgram {
     /** ===== LOCAL VARIABLES ====== */
     private int actionSlider = 0;
 
+    GRect gameFramePreviewer;
+
+    GPaddle paddlePreview;
     GSlider sliderPaddleWidth;
     GLabel paddleWidthValueLbl;
+
 
 
 
@@ -102,6 +107,10 @@ public class StartMenu extends GraphicsProgram {
                 PADDLE_WIDTH = (e.getX()-SETTING_PADDING)/2+10;
                 paddleWidthValueLbl.setLabel(PADDLE_WIDTH+"");
                 paddleWidthValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH- paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
+
+                remove(paddlePreview);
+                paddlePreview = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
+                add(paddlePreview, gameFramePreviewer.getX()+Breakout.APPLICATION_WIDTH/2.0, gameFramePreviewer.getY()+Breakout.APPLICATION_HEIGHT-PADDLE_Y_OFFSET);
             }
         }
     }
@@ -150,13 +159,13 @@ public class StartMenu extends GraphicsProgram {
 
     /** ===== PREVIEW ===== */
     private void preview(){
-        GRect gameFramePreviewer = new GRect(SETTING_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
+        gameFramePreviewer = new GRect(SETTING_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
         gameFramePreviewer.setFillColor(Breakout.bgColor);
         add(gameFramePreviewer);
 
-
-
+        paddlePreview = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
+        add(paddlePreview, gameFramePreviewer.getX()+Breakout.APPLICATION_WIDTH/2.0, gameFramePreviewer.getY()+Breakout.APPLICATION_HEIGHT-PADDLE_Y_OFFSET);
     }
 
 
