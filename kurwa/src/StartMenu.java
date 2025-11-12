@@ -17,12 +17,49 @@ import java.awt.event.MouseEvent;
 
 public class StartMenu extends GraphicsProgram {
     // StartMenu(){}
+    /** ============== CONSTANTS ============== */
+
+    //  Dimensions of the paddle
+    public static int PADDLE_WIDTH = 60;
+    public int getPADDLE_WIDTH() {return PADDLE_WIDTH;};
+    public static void setPADDLE_WIDTH(int PADDLE_WIDTH) {PADDLE_WIDTH = PADDLE_WIDTH;}
+
+    public static int PADDLE_HEIGHT = 10;
+
+    //  Offset of the paddle up from the bottom
+    public static int PADDLE_Y_OFFSET = 30;
+
+    //  Number of bricks per row
+    public static int NBRICKS_PER_ROW = 10;
+
+    //  Number of rows of bricks
+    public static int NBRICK_ROWS = 10;
+
+    //  Separation between bricks
+    public static int BRICK_SEP = 4;
+
+    //  Width of a brick
+    public static int BRICK_WIDTH =
+            (WIDTH - (NBRICKS_PER_ROW - 1) * BRICK_SEP) / NBRICKS_PER_ROW;
+
+    //  Height of a brick
+    public static int BRICK_HEIGHT = 8;
+
+    //  Radius of the ball in pixels
+    public static int BALL_RADIUS = 10;
+
+    //  Offset of the top brick row from the top
+    public static int BRICK_Y_OFFSET = 70;
+
+    //  Number of turns
+    public static int NTURNS = 3;
+
 
     /** ===== LOCAL CONSTANTS ====== */
-    private int SETTING_WIDTH = 400;
-    private int SETTING_PADDING = 30;
+    private static int SETTING_WIDTH = 400;
+    private static int SETTING_PADDING = 30;
 
-    private int SETTING_WINDOW_WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 2*SETTING_PADDING;
+    private int SETTING_WINDOW_WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 3*SETTING_PADDING;
     private int SETTING_WINDOW_HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
 
     /** ===== LOCAL VARIABLES ====== */
@@ -46,11 +83,25 @@ public class StartMenu extends GraphicsProgram {
 
     public void mousePressed(MouseEvent e) {
         if (e.getX()>=SETTING_PADDING && e.getX()<=SETTING_PADDING+SETTING_WIDTH) {
-            //if (e.getY()>=)
+            if (e.getY()>=SETTING_WINDOW_HEIGHT*0.22-5 && e.getY()<=SETTING_WINDOW_HEIGHT*0.22+5) {
+                actionSlider = 1;
+                System.out.println(1);
+            }
         }
+    }
+    public void mouseReleased(MouseEvent e) {
+        actionSlider = 0;
+        System.out.println(0);
     }
 
     public void mouseDragged(MouseEvent e) {
+        if (e.getX()>=SETTING_PADDING && e.getX()<=SETTING_PADDING+SETTING_WIDTH) {
+            if (actionSlider == 1) {
+                sliderPaddleWidth.sliderMove(e.getX(), 5);
+                PADDLE_WIDTH = (e.getX()-SETTING_PADDING);
+                System.out.println(PADDLE_WIDTH);
+            }
+        }
     }
 
 
@@ -91,10 +142,19 @@ public class StartMenu extends GraphicsProgram {
 
 
     private void preview(){
-        GRect gameFramePreviewer = new GRect(SETTING_WIDTH + SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
+        GRect gameFramePreviewer = new GRect(SETTING_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
         gameFramePreviewer.setFillColor(Breakout.bgColor);
         add(gameFramePreviewer);
 
+    }
+
+
+    /**
+     * get padding
+     * @return
+     */
+    public static int getSETTING_PADDING() {
+        return SETTING_PADDING;
     }
 }
