@@ -1,10 +1,12 @@
 /*
  * File: Breakout.java
  * -------------------
- * Name:
- * Section Leader:
+ * Name: Mykhailo Pulov, Veronika Prosvirkin
+ * Section Leader: Both
  *
- * This file will eventually implement the game of Breakout.
+ * This file is a main one in the game of Breakout.
+ *
+ * Last update: 14:33
  */
 
 import acm.program.*;
