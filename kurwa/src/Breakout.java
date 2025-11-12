@@ -9,7 +9,7 @@
 
 import acm.program.*;
 
-public class Main extends GraphicsProgram {
+public class Breakout extends GraphicsProgram {
 
     /** Width and height of application window in pixels */
     public static final int APPLICATION_WIDTH = 400;
