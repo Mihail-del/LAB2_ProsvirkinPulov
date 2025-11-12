@@ -21,7 +21,7 @@ public class Breakout extends GraphicsProgram {
     //  Width and height of application window in pixels
     public static int APPLICATION_WIDTH = 500;
     public static int APPLICATION_HEIGHT = 700;
-    private static int SETTING_PADDING = 30;
+    public static int SETTING_PADDING = 30;
     private static int SETTING_WINDOW_WIDTH = 2*APPLICATION_WIDTH+ 3*SETTING_PADDING;
     private static int SETTING_WINDOW_HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
 
