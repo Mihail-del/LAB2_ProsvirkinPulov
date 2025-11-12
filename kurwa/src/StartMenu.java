@@ -145,7 +145,7 @@ public class StartMenu extends GraphicsProgram {
 
 
 
-
+    /** ===== PREVIEV ===== */
     private void preview(){
         GRect gameFramePreviewer = new GRect(SETTING_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
@@ -155,11 +155,53 @@ public class StartMenu extends GraphicsProgram {
     }
 
 
-    /**
-     * get padding
-     * @return
-     */
+
+    /** ====== GETTERS AND SETTERS ====== */
     public static int getSETTING_PADDING() {
         return SETTING_PADDING;
+    }
+
+    public static int getPaddleWidth() {
+        return PADDLE_WIDTH;
+    }
+
+    public static int getPaddleHeight() {
+        return PADDLE_HEIGHT;
+    }
+
+    public static int getPaddleYOffset() {
+        return PADDLE_Y_OFFSET;
+    }
+
+    public static int getNbricksPerRow() {
+        return NBRICKS_PER_ROW;
+    }
+
+    public static int getNbrickRows() {
+        return NBRICK_ROWS;
+    }
+
+    public static int getBrickSep() {
+        return BRICK_SEP;
+    }
+
+    public static int getBrickWidth() {
+        return BRICK_WIDTH;
+    }
+
+    public static int getBrickHeight() {
+        return BRICK_HEIGHT;
+    }
+
+    public static int getBallRadius() {
+        return BALL_RADIUS;
+    }
+
+    public static int getBrickYOffset() {
+        return BRICK_Y_OFFSET;
+    }
+
+    public static int getNTURNS() {
+        return NTURNS;
     }
 }
