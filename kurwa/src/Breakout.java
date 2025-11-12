@@ -5,7 +5,6 @@
  * Section Leader: Both
  *
  * This file is a main one in the game of Breakout.
- *
  * Last update: 15:42
  */
 
@@ -18,26 +17,36 @@ public class Breakout extends GraphicsProgram {
     //  Width and height of application window in pixels
     public static final int APPLICATION_WIDTH = 500;
     public static final int APPLICATION_HEIGHT = 700;
+
     //  Dimensions of the paddle
     public static final int PADDLE_WIDTH = 60;
     public static final int PADDLE_HEIGHT = 10;
+
     //  Offset of the paddle up from the bottom
     public static final int PADDLE_Y_OFFSET = 30;
+
     //  Number of bricks per row
     public static final int NBRICKS_PER_ROW = 10;
+
     //  Number of rows of bricks
     public static final int NBRICK_ROWS = 10;
+
     //  Separation between bricks
     public static final int BRICK_SEP = 4;
+
     //  Width of a brick
     public static final int BRICK_WIDTH =
             (WIDTH - (NBRICKS_PER_ROW - 1) * BRICK_SEP) / NBRICKS_PER_ROW;
+
     //  Height of a brick
     public static final int BRICK_HEIGHT = 8;
+
     //  Radius of the ball in pixels
     public static final int BALL_RADIUS = 10;
+
     //  Offset of the top brick row from the top
     public static final int BRICK_Y_OFFSET = 70;
+
     //  Number of turns
     public static final int NTURNS = 3;
 
@@ -48,12 +57,19 @@ public class Breakout extends GraphicsProgram {
 
 
 
+
     /** ============== RUN ============== */
     public void run() {
-        setBackground(bgColor);
+        configureApp();
+
         //StartMenu startMenu = new StartMenu();
         //startMenu.draw();
-
     }
 
+    /** ============== APP CONFIGURATION ============== */
+    private void configureApp() {
+        setBackground(bgColor);
+        setSize(Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
+        setSize(2*(Breakout.APPLICATION_WIDTH)-getWidth(), 2*(Breakout.APPLICATION_HEIGHT)-getHeight());
+    }
 }
