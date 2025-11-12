@@ -6,7 +6,7 @@
  *
  * This file is a main one in the game of Breakout.
  *
- * Last update: 15:09
+ * Last update: 15:42
  */
 
 import acm.program.*;
