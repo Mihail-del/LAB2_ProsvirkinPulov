@@ -15,7 +15,7 @@ public class Breakout extends GraphicsProgram {
 
     /** Width and height of application window in pixels */
     public static final int APPLICATION_WIDTH = 400;
-    public static final int APPLICATION_HEIGHT = 600;
+    public static final int APPLICATION_HEIGHT = 700;
 
     /** Dimensions of the paddle */
     public static final int PADDLE_WIDTH = 60;
