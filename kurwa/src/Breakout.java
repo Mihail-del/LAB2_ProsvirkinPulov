@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 23:52
+ * Last update: 00:31 | 13.11.2025
  */
 
 import acm.graphics.GImage;
@@ -88,24 +88,24 @@ public class Breakout extends GraphicsProgram {
     public void run() {
         addMouseListeners();
         configureAppMenu();
-
         waitForContinue();
+
+        configureApp();
+        // here game starts
     }
 
     /** ============== APP CONFIGURATION ============== */
     // main game
     private void configureApp() {
-        setBackground(settingsColor);
-        setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
-        setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
-        StartMenuEnabled = true;
-        header();
-        paddleSettings();
-        preview();
+        removeAll();
+        setBackground(bgColor);
+        setSize(APPLICATION_WIDTH, APPLICATION_HEIGHT);
+        setSize(2*APPLICATION_WIDTH-getWidth(), 2*APPLICATION_HEIGHT-getHeight());
     }
 
     // start menu
     private void configureAppMenu() {
+        removeAll();
         setBackground(settingsColor);
         setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
         setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
@@ -113,6 +113,7 @@ public class Breakout extends GraphicsProgram {
         header();
         paddleSettings();
         preview();
+        saveStartMenu();
     }
 
     /** ============== PRESSED MOUSE ACTIONS ============== */
@@ -122,6 +123,14 @@ public class Breakout extends GraphicsProgram {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.22 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.22 + 20) {
                     actionSlider = 1;
                     System.out.println(1);
+                }
+            }
+
+            if (e.getX() >= SETTING_PADDING+APPLICATION_WIDTH*0.25 && e.getX() <= SETTING_PADDING+APPLICATION_WIDTH*0.75){
+                if (e.getY() >= SETTING_WINDOW_HEIGHT*0.92-SETTING_PADDING && e.getY() <= SETTING_WINDOW_HEIGHT-SETTING_PADDING) {
+                    System.out.println("save");
+                    StartMenuEnabled  = false;
+                    waitingContinue = false;
                 }
             }
         }
@@ -154,9 +163,8 @@ public class Breakout extends GraphicsProgram {
     /** ============== WAITING TO CONTINUE ============== */
     private void waitForContinue() {
         waitingContinue = true;
-        println("Restarting"); // здесь твоя консольная строка
         while (waitingContinue) {
-            pause(20); // yield UI
+            pause(50);
         }
     }
 
@@ -203,6 +211,20 @@ public class Breakout extends GraphicsProgram {
 
 
 
+    /* ===== SAVE BUTTON ===== */
+    private void saveStartMenu(){
+        GRect savebtn = new GRect(SETTING_PADDING+APPLICATION_WIDTH*0.25, SETTING_WINDOW_HEIGHT*0.92-SETTING_PADDING, APPLICATION_WIDTH*0.5, SETTING_WINDOW_HEIGHT*0.08);
+        savebtn.setFilled(true);
+        savebtn.setFillColor(sliderBallColor);
+        savebtn.setColor(sliderBallColor);
+        add(savebtn);
+
+        GLabel savebtnLabel = new GLabel("Save settings");
+        savebtnLabel.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        savebtnLabel.setColor(Breakout.bgColor);
+        savebtnLabel.setLocation(savebtn.getX()+(savebtn.getWidth()-savebtnLabel.getWidth())*0.5, savebtn.getY()+(savebtn.getHeight()+savebtnLabel.getHeight())*0.42);
+        add(savebtnLabel);
+    }
 
     /* ===== PREVIEW ===== */
     private void preview(){
