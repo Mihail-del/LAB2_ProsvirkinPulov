@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 19:51
+ * Last update: 23:52
  */
 
 import acm.graphics.GImage;
