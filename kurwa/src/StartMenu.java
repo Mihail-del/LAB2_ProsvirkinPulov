@@ -13,6 +13,8 @@ import acm.graphics.GLabel;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
+import java.awt.event.MouseEvent;
+
 public class StartMenu extends GraphicsProgram {
     // StartMenu(){}
 
@@ -33,8 +35,21 @@ public class StartMenu extends GraphicsProgram {
         header();
         paddleSettings();
 
+        addMouseListeners();
         preview();
     }
+
+    public void mouseDragged(MouseEvent e) {
+    }
+
+
+
+
+
+
+
+
+
 
     /** ===== HEADER ===== */
     private void header(){
@@ -45,12 +60,15 @@ public class StartMenu extends GraphicsProgram {
         add(image);
     }
 
+    /** ===== HEADER ===== */
     private void paddleSettings(){
         GLabel paddleLbl = new GLabel("Paddle width");
         paddleLbl.setFont("Monospased-"+(int) Math.round(SETTING_WIDTH*0.05));
         paddleLbl.setColor(Breakout.fontColor);
         paddleLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
         add(paddleLbl);
+
+
     }
 
 
