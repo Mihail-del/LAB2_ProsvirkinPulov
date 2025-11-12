@@ -25,7 +25,7 @@ public class StartMenu extends GraphicsProgram {
 
     // drawing the menu
     public void run(){
-        setBackground(Breakout.bgColor);
+        setBackground(Breakout.settingsColor);
         setSize(WIDTH, HEIGHT);
         setSize(2*WIDTH-getWidth() + 300, 2*HEIGHT-getHeight());
 
