@@ -4,5 +4,6 @@ public class Main {
         System.out.println("Tovariszi");
         System.out.println("Tovariszi");
         System.out.println("Tovariszi");
+        System.out.println("Gde ya?");
     }
 }
