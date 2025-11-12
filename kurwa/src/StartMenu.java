@@ -25,6 +25,11 @@ public class StartMenu extends GraphicsProgram {
     private int SETTING_WINDOW_WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 2*SETTING_PADDING;
     private int SETTING_WINDOW_HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
 
+    /** ===== LOCAL VARIABLES ====== */
+    private int actionSlider = 0;
+
+    GSlider sliderPaddleWidth;
+
 
     // drawing the menu
     public void run(){
@@ -37,6 +42,12 @@ public class StartMenu extends GraphicsProgram {
 
         addMouseListeners();
         preview();
+    }
+
+    public void mousePressed(MouseEvent e) {
+        if (e.getX()>=SETTING_PADDING && e.getX()<=SETTING_PADDING+SETTING_WIDTH) {
+            //if (e.getY()>=)
+        }
     }
 
     public void mouseDragged(MouseEvent e) {
@@ -68,7 +79,9 @@ public class StartMenu extends GraphicsProgram {
         paddleLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
         add(paddleLbl);
 
-
+        sliderPaddleWidth = new GSlider(SETTING_WIDTH, 3, 10);
+        sliderPaddleWidth.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.22);
+        add(sliderPaddleWidth);
     }
 
 
