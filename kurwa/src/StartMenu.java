@@ -16,7 +16,7 @@ import acm.program.GraphicsProgram;
 
 import java.awt.event.MouseEvent;
 
-public class StartMenu extends GraphicsProgram {
+public class StartMenu extends GCompound {
     // StartMenu(){}
     /** ============== CONSTANTS ============== */
 
@@ -38,7 +38,7 @@ public class StartMenu extends GraphicsProgram {
 
     //  Width of a brick
     public static int BRICK_WIDTH =
-            (WIDTH - (NBRICKS_PER_ROW - 1) * BRICK_SEP) / NBRICKS_PER_ROW;
+            (Breakout.APPLICATION_WIDTH - (NBRICKS_PER_ROW - 1) * BRICK_SEP) / NBRICKS_PER_ROW;
 
     //  Height of a brick
     public static int BRICK_HEIGHT = 8;
@@ -53,12 +53,12 @@ public class StartMenu extends GraphicsProgram {
     public static int NTURNS = 3;
 
 
-    /** ===== LOCAL CONSTANTS ====== */
-    private int SETTING_WIDTH = Breakout.APPLICATION_WIDTH;
+    /** ===== START MENU ====== */
+    private static int SETTING_WIDTH = Breakout.APPLICATION_WIDTH;
     private static int SETTING_PADDING = 30;
 
-    private int SETTING_WINDOW_WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 3*SETTING_PADDING;
-    private int SETTING_WINDOW_HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
+    private static int SETTING_WINDOW_WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 3*SETTING_PADDING;
+    private static int SETTING_WINDOW_HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
 
     /** ===== LOCAL VARIABLES ====== */
     private int actionSlider = 0;
@@ -76,22 +76,19 @@ public class StartMenu extends GraphicsProgram {
 
     // drawing the menu
     public void run(){
-        setBackground(Breakout.settingsColor);
-        setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
-        setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
 
         header();
         paddleSettings();
-
-        addMouseListeners();
         preview();
     }
 
     public void mousePressed(MouseEvent e) {
-        if (e.getX()>=SETTING_PADDING && e.getX()<=SETTING_PADDING+SETTING_WIDTH) {
-            if (e.getY()>=SETTING_WINDOW_HEIGHT*0.22-20 && e.getY()<=SETTING_WINDOW_HEIGHT*0.22+20) {
-                actionSlider = 1;
-                System.out.println(1);
+        if(StartMenuEnabled) {
+            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + SETTING_WIDTH) {
+                if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.22 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.22 + 20) {
+                    actionSlider = 1;
+                    System.out.println(1);
+                }
             }
         }
     }
@@ -101,16 +98,18 @@ public class StartMenu extends GraphicsProgram {
     }
 
     public void mouseDragged(MouseEvent e) {
-        if (e.getX()>=SETTING_PADDING && e.getX()<=SETTING_PADDING+SETTING_WIDTH) {
-            if (actionSlider == 1) {
-                sliderPaddleWidth.sliderMove(e.getX(), 7);
-                PADDLE_WIDTH = (e.getX()-SETTING_PADDING)/2+10;
-                paddleWidthValueLbl.setLabel(PADDLE_WIDTH+"");
-                paddleWidthValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH- paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
+        if(StartMenuEnabled) {
+            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + SETTING_WIDTH) {
+                if (actionSlider == 1) {
+                    sliderPaddleWidth.sliderMove(e.getX(), 7);
+                    PADDLE_WIDTH = (e.getX() - SETTING_PADDING) / 2 + 10;
+                    paddleWidthValueLbl.setLabel(PADDLE_WIDTH + "");
+                    paddleWidthValueLbl.setLocation(SETTING_PADDING + SETTING_WIDTH - paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.2);
 
-                remove(paddlePreview);
-                paddlePreview = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
-                add(paddlePreview, gameFramePreviewer.getX()+Breakout.APPLICATION_WIDTH/2.0, gameFramePreviewer.getY()+Breakout.APPLICATION_HEIGHT-PADDLE_Y_OFFSET);
+                    remove(paddlePreview);
+                    paddlePreview = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
+                    add(paddlePreview, gameFramePreviewer.getX() + Breakout.APPLICATION_WIDTH / 2.0, gameFramePreviewer.getY() + Breakout.APPLICATION_HEIGHT - PADDLE_Y_OFFSET);
+                }
             }
         }
     }
