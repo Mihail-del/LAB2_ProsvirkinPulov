@@ -61,6 +61,9 @@ public class Breakout extends GraphicsProgram {
 
     /** ===== VARIABLES ====== */
     private boolean StartMenuEnabled = false;
+    private boolean waitingContinue = false;
+
+
     private int actionSlider = 0;
 
     GRect gameFramePreviewer;
@@ -86,14 +89,13 @@ public class Breakout extends GraphicsProgram {
         addMouseListeners();
         configureAppMenu();
 
-        //StartMenu startMenu = new StartMenu();
-        //startMenu.draw();
+        waitForContinue();
     }
 
     /** ============== APP CONFIGURATION ============== */
     // main game
     private void configureApp() {
-        setBackground(bgColor);
+        setBackground(settingsColor);
         setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
         setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
         StartMenuEnabled = true;
@@ -104,7 +106,7 @@ public class Breakout extends GraphicsProgram {
 
     // start menu
     private void configureAppMenu() {
-        setBackground(bgColor);
+        setBackground(settingsColor);
         setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
         setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
         StartMenuEnabled = true;
@@ -148,6 +150,17 @@ public class Breakout extends GraphicsProgram {
             }
         }
     }
+
+    /** ============== WAITING TO CONTINUE ============== */
+    private void waitForContinue() {
+        waitingContinue = true;
+        println("Restarting"); // здесь твоя консольная строка
+        while (waitingContinue) {
+            pause(20); // yield UI
+        }
+    }
+
+
 
 
 
