@@ -8,7 +8,7 @@ public class GSlider extends GCompound {
     GOval ball;
 
     public GSlider(double width, double height, double diameter) {
-        this.body = new GRect(0, 0, width, height);
+        this.body = new GRect(0, -height/2, width, height);
         this.body.setFilled(true);
         this.body.setFillColor(Breakout.sliderColor);
         this.body.setColor(Breakout.sliderColor);

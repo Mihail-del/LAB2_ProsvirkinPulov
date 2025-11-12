@@ -21,9 +21,6 @@ public class StartMenu extends GraphicsProgram {
 
     //  Dimensions of the paddle
     public static int PADDLE_WIDTH = 60;
-    public int getPADDLE_WIDTH() {return PADDLE_WIDTH;};
-    public static void setPADDLE_WIDTH(int PADDLE_WIDTH) {PADDLE_WIDTH = PADDLE_WIDTH;}
-
     public static int PADDLE_HEIGHT = 10;
 
     //  Offset of the paddle up from the bottom
@@ -56,7 +53,7 @@ public class StartMenu extends GraphicsProgram {
 
 
     /** ===== LOCAL CONSTANTS ====== */
-    private static int SETTING_WIDTH = 400;
+    private int SETTING_WIDTH = Breakout.APPLICATION_WIDTH;
     private static int SETTING_PADDING = 30;
 
     private int SETTING_WINDOW_WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 3*SETTING_PADDING;
@@ -66,6 +63,7 @@ public class StartMenu extends GraphicsProgram {
     private int actionSlider = 0;
 
     GSlider sliderPaddleWidth;
+    GLabel paddleValueLbl;
 
 
     // drawing the menu
@@ -83,7 +81,7 @@ public class StartMenu extends GraphicsProgram {
 
     public void mousePressed(MouseEvent e) {
         if (e.getX()>=SETTING_PADDING && e.getX()<=SETTING_PADDING+SETTING_WIDTH) {
-            if (e.getY()>=SETTING_WINDOW_HEIGHT*0.22-5 && e.getY()<=SETTING_WINDOW_HEIGHT*0.22+5) {
+            if (e.getY()>=SETTING_WINDOW_HEIGHT*0.22-20 && e.getY()<=SETTING_WINDOW_HEIGHT*0.22+20) {
                 actionSlider = 1;
                 System.out.println(1);
             }
@@ -97,9 +95,10 @@ public class StartMenu extends GraphicsProgram {
     public void mouseDragged(MouseEvent e) {
         if (e.getX()>=SETTING_PADDING && e.getX()<=SETTING_PADDING+SETTING_WIDTH) {
             if (actionSlider == 1) {
-                sliderPaddleWidth.sliderMove(e.getX(), 5);
-                PADDLE_WIDTH = (e.getX()-SETTING_PADDING);
-                System.out.println(PADDLE_WIDTH);
+                sliderPaddleWidth.sliderMove(e.getX(), 7);
+                PADDLE_WIDTH = (e.getX()-SETTING_PADDING)/2+10;
+                paddleValueLbl.setLabel(PADDLE_WIDTH+"");
+                paddleValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH-paddleValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
             }
         }
     }
@@ -124,13 +123,19 @@ public class StartMenu extends GraphicsProgram {
 
     /** ===== HEADER ===== */
     private void paddleSettings(){
-        GLabel paddleLbl = new GLabel("Paddle width");
-        paddleLbl.setFont("Monospased-"+(int) Math.round(SETTING_WIDTH*0.05));
-        paddleLbl.setColor(Breakout.fontColor);
-        paddleLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
-        add(paddleLbl);
+        GLabel paddleWidthLbl = new GLabel("Paddle width");
+        paddleWidthLbl.setFont("Monospased-"+(int) Math.round(SETTING_WIDTH*0.05));
+        paddleWidthLbl.setColor(Breakout.fontColor);
+        paddleWidthLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
+        add(paddleWidthLbl);
 
-        sliderPaddleWidth = new GSlider(SETTING_WIDTH, 3, 10);
+        paddleValueLbl = new GLabel("0");
+        paddleValueLbl.setFont("Monospased-"+(int) Math.round(SETTING_WIDTH*0.05));
+        paddleValueLbl.setColor(Breakout.fontColor);
+        paddleValueLbl.setLocation(SETTING_PADDING+SETTING_WIDTH-paddleValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
+        add(paddleValueLbl);
+
+        sliderPaddleWidth = new GSlider(SETTING_WIDTH, 3, 14);
         sliderPaddleWidth.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.22);
         add(sliderPaddleWidth);
     }
@@ -147,5 +152,14 @@ public class StartMenu extends GraphicsProgram {
         gameFramePreviewer.setFillColor(Breakout.bgColor);
         add(gameFramePreviewer);
 
+    }
+
+
+    /**
+     * get padding
+     * @return
+     */
+    public static int getSETTING_PADDING() {
+        return SETTING_PADDING;
     }
 }
