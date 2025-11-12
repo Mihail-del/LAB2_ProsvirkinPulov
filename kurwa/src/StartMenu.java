@@ -17,11 +17,11 @@ public class StartMenu extends GraphicsProgram {
     // StartMenu(){}
 
     /** ===== LOCAL CONSTANTS ====== */
-    private static final int SETTING_WIDTH = 300;
-    private static final int SETTING_PADDING = 30;
+    private static int SETTING_WIDTH = 300;
+    private static int SETTING_PADDING = 30;
 
-    private static final int WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 2*SETTING_PADDING;
-    private static final int HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
+    private static int WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 2*SETTING_PADDING;
+    private static int HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
 
     // drawing the menu
     public void run(){
