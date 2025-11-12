@@ -148,13 +148,4 @@ public class StartMenu extends GraphicsProgram {
         add(gameFramePreviewer);
 
     }
-
-
-    /**
-     * get padding
-     * @return
-     */
-    public static int getSETTING_PADDING() {
-        return SETTING_PADDING;
-    }
 }
