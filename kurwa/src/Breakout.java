@@ -50,9 +50,9 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== RUN ============== */
     public void run() {
-        setBackground(Breakout.bgColor);
-        StartMenu startMenu = new StartMenu();
-        startMenu.draw();
+        setBackground(bgColor);
+        //StartMenu startMenu = new StartMenu();
+        //startMenu.draw();
 
     }
 

@@ -13,13 +13,16 @@ import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
 public class StartMenu extends GraphicsProgram {
-    StartMenu(){}
+    // StartMenu(){}
 
 
     // drawing the menu
-    public static void draw(){
+    public void run(){
+        setBackground(Breakout.bgColor);
+        setSize(Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
+
         GRect rect = new GRect(0,0,400,400);
         rect.setFilled(true);
-        //add(rect);
+        add(rect);
     }
 }
