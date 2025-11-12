@@ -8,6 +8,7 @@
  * Last update: 15:09
  */
 
+import acm.graphics.GImage;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
@@ -27,9 +28,9 @@ public class StartMenu extends GraphicsProgram {
 
     /** ===== HEADER ===== */
     private void header(){
-        GRect rect = new GRect(0,0, Breakout.APPLICATION_WIDTH,Breakout.APPLICATION_HEIGHT);
-        rect.setFilled(true);
-        add(rect);
+        GImage image = new GImage("../images/gameSettings.png");
+        image.setSize(Breakout.APPLICATION_WIDTH*0.5, Breakout.APPLICATION_WIDTH*9/16.0);
+        add(image);
     }
 
     private void paddleSettings(){
