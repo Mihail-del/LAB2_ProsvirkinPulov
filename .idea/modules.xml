@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/GPaddle/GPaddle.iml" filepath="$PROJECT_DIR$/GPaddle/GPaddle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/LAB2_ProsvirkinPulov.iml" filepath="$PROJECT_DIR$/.idea/LAB2_ProsvirkinPulov.iml" />
       <module fileurl="file://$PROJECT_DIR$/kurwa/kurwa.iml" filepath="$PROJECT_DIR$/kurwa/kurwa.iml" />
     </modules>
