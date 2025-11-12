@@ -17,17 +17,18 @@ public class StartMenu extends GraphicsProgram {
     // StartMenu(){}
 
     /** ===== LOCAL CONSTANTS ====== */
-    private static int SETTING_WIDTH = 300;
-    private static int SETTING_PADDING = 30;
+    private int SETTING_WIDTH = 400;
+    private int SETTING_PADDING = 30;
 
-    private static int WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 2*SETTING_PADDING;
-    private static int HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
+    private int SETTING_WINDOW_WIDTH = Breakout.APPLICATION_WIDTH + SETTING_WIDTH + 2*SETTING_PADDING;
+    private int SETTING_WINDOW_HEIGHT = Breakout.APPLICATION_HEIGHT + 2*SETTING_PADDING;
+
 
     // drawing the menu
     public void run(){
         setBackground(Breakout.settingsColor);
-        setSize(WIDTH, HEIGHT);
-        setSize(2*WIDTH-getWidth() + 300, 2*HEIGHT-getHeight());
+        setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
+        setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
 
         header();
         paddleSettings();
@@ -38,15 +39,18 @@ public class StartMenu extends GraphicsProgram {
     /** ===== HEADER ===== */
     private void header(){
         GImage image = new GImage("images/gameSettings.png");
-        double imageWidth = WIDTH*0.8;
+        double imageWidth = SETTING_WIDTH *0.8;
         image.setSize(imageWidth, imageWidth*0.1);
-        image.setLocation((WIDTH-imageWidth)/2,HEIGHT*0.05);
+        image.setLocation((SETTING_WIDTH -imageWidth)/2, SETTING_WINDOW_HEIGHT *0.05);
         add(image);
     }
 
     private void paddleSettings(){
-        GLabel paddleLbl = new GLabel("Paddle Width");
-
+        GLabel paddleLbl = new GLabel("Paddle width");
+        paddleLbl.setFont("Monospased-"+(int) Math.round(SETTING_WIDTH*0.05));
+        paddleLbl.setColor(Breakout.fontColor);
+        paddleLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
+        add(paddleLbl);
     }
 
 
@@ -56,7 +60,7 @@ public class StartMenu extends GraphicsProgram {
 
 
     private void preview(){
-        GRect gameFramePreviewer = new GRect(SETTING_WIDTH+ SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
+        GRect gameFramePreviewer = new GRect(SETTING_WIDTH + SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
         gameFramePreviewer.setFillColor(Breakout.bgColor);
         add(gameFramePreviewer);

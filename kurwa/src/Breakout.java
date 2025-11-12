@@ -53,6 +53,7 @@ public class Breakout extends GraphicsProgram {
     /** ============== COLOR PALETTE ============== */
     public static Color bgColor = new Color(37, 51, 61);
     public static Color settingsColor = new Color(59, 82, 97);
+    public static Color fontColor = new Color(254, 239, 207);
     public static Color paddleColor = new Color(172, 102, 86);
     public static Color ballColor = new Color(250, 233, 204);
 
