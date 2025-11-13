@@ -8,9 +8,7 @@
  * Last update: 15:00 | 13.11.2025
  */
 
-import acm.graphics.GImage;
-import acm.graphics.GLabel;
-import acm.graphics.GRect;
+import acm.graphics.*;
 import acm.program.*;
 
 import java.awt.*;
@@ -61,6 +59,7 @@ public class Breakout extends GraphicsProgram {
     /** ===== VARIABLES ====== */
     private boolean StartMenuEnabled = false;
     private boolean waitingContinue = false;
+    private boolean isGameStarted;
 
 
     private int actionSlider = 0;
@@ -68,10 +67,13 @@ public class Breakout extends GraphicsProgram {
     GRect gameFramePreviewer;
 
     GPaddle paddlePreview;
+    GPaddle gamePaddle;
+    GOval ball;
     GSlider sliderPaddleWidth;
     GLabel paddleWidthValueLbl;
     GSlider sliderPaddlePadding;
     GLabel paddlePaddingValueLbl;
+
 
     GBricksPreview bricksPreview;
     GSlider sliderBricksColumns;
@@ -109,7 +111,12 @@ public class Breakout extends GraphicsProgram {
         waitForContinue();
 
         configureApp();
-        // here game starts
+        playGame();
+    }
+    // play the main game
+    private void playGame() {
+        waitForClick();
+
     }
 
     /** ============== APP CONFIGURATION ============== */
@@ -119,7 +126,54 @@ public class Breakout extends GraphicsProgram {
         setBackground(bgColor);
         setSize(APPLICATION_WIDTH, APPLICATION_HEIGHT);
         setSize(2*APPLICATION_WIDTH-getWidth(), 2*APPLICATION_HEIGHT-getHeight());
+        gamePaddle = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
+        add(gamePaddle, APPLICATION_WIDTH/2.0,APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT);
+        gameBricks(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
+        gameBall(BALL_RADIUS);
     }
+
+    //ball for game
+    private void gameBall(int ballRadius) {
+        double x = APPLICATION_WIDTH / 2.0 - BALL_RADIUS;
+        double y = APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT/2.0 - (2 * BALL_RADIUS);
+        ball = new GOval(x, y, 2 * BALL_RADIUS, 2 * BALL_RADIUS);
+
+        ball.setFilled(true);
+        ball.setColor(ballColor);
+        ball.setFillColor(ballColor);
+        add(ball);
+    }
+
+
+    //building bricks in the main game
+    private void gameBricks(double bricksColumns, double bricksRows, double bricksWidth, double bricksHeight) {
+        for (int i = 0; i < bricksColumns; i++) {
+            for (int j = 0; j < bricksRows; j++) {
+
+                double x = Breakout.BRICK_SEP + i * (bricksWidth + Breakout.BRICK_SEP);
+                double y = Breakout.BRICK_Y_OFFSET + j * (bricksHeight + Breakout.BRICK_SEP);
+
+                GRoundRect roundRect = new GRoundRect(x, y, bricksWidth, bricksHeight);
+                Color brickColor;
+                if(j==0) brickColor = Breakout.brickOneColor;
+                else if(j==1) brickColor = Breakout.brickTwoColor;
+                else if(j==2) brickColor = Breakout.brickThreeColor;
+                else if(j==3) brickColor = Breakout.brickFourColor;
+                else if(j==4) brickColor = Breakout.brickFiveColor;
+                else if(j==5) brickColor = Breakout.brickSixColor;
+                else if(j==6) brickColor = Breakout.brickSevenColor;
+                else if(j==7) brickColor = Breakout.brickEightColor;
+                else if(j==8) brickColor = Breakout.brickNineColor;
+                else brickColor = Breakout.brickTenColor;
+
+                roundRect.setColor(brickColor);
+                roundRect.setFillColor(brickColor);
+                roundRect.setFilled(true);
+                add(roundRect);
+            }
+        }
+    }
+
 
     // start menu
     private void configureAppMenu() {
@@ -241,6 +295,25 @@ public class Breakout extends GraphicsProgram {
             }
         }
     }
+
+
+    /** ============== MOVING MOUSE ACTIONS WITH PADDLE ============== */
+    public void mouseMoved(MouseEvent e){
+        if (!StartMenuEnabled){
+            double newX = e.getX() - gamePaddle.getWidth() / 2.0;;
+            double currentY = gamePaddle.getY();
+
+            if (newX < 0 + gamePaddle.getWidth()/2){
+                newX=0 + gamePaddle.getWidth()/2;
+            }
+            if (newX > getWidth() - gamePaddle.getWidth()/2) {
+                newX = getWidth() - gamePaddle.getWidth()/2;
+            }
+
+            gamePaddle.setLocation(newX, currentY);
+        }
+    }
+
 
     /** ============== WAITING TO CONTINUE ============== */
     private void waitForContinue() {
