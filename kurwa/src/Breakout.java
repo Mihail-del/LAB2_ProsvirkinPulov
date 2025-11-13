@@ -41,13 +41,13 @@ public class Breakout extends GraphicsProgram {
     public static int NBRICK_ROWS = 10;
 
     //  Separation between bricks
-    public static double BRICK_SEP = 4;
+    public static double BRICK_SEP = 10;
 
     //  Width of a brick
     public static double BRICK_WIDTH = (APPLICATION_WIDTH - (NBRICKS_PER_ROW+1) * BRICK_SEP) / NBRICKS_PER_ROW;
 
     //  Height of a brick
-    public static double BRICK_HEIGHT = 8;
+    public static double BRICK_HEIGHT = 15;
 
     //  Radius of the ball in pixels
     public static int BALL_RADIUS = 10;
@@ -85,6 +85,17 @@ public class Breakout extends GraphicsProgram {
     public static Color sliderBallColor = new Color(142, 167, 188);
     public static Color paddleColor = new Color(172, 102, 86);
     public static Color ballColor = new Color(250, 233, 204);
+
+    public static Color brickOneColor = new Color(214, 155, 132);
+    public static Color brickTwoColor = new Color(214, 178, 132);
+    public static Color brickThreeColor = new Color(203, 214, 132);
+    public static Color brickFourColor = new Color(132, 214, 146);
+    public static Color brickFiveColor = new Color(132, 214, 195);
+    public static Color brickSixColor = new Color(132, 195, 214);
+    public static Color brickSevenColor = new Color(132, 139, 214);
+    public static Color brickEightColor = new Color(147, 132, 214);
+    public static Color brickNineColor = new Color(214, 132, 213);
+    public static Color brickTenColor = new Color(214, 132, 157);
 
 
 
