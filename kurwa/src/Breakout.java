@@ -32,7 +32,7 @@ public class Breakout extends GraphicsProgram {
     public static int PADDLE_HEIGHT = 10;
 
     //  Offset of the paddle up from the bottom
-    public static int PADDLE_PADDING = 30;
+    public static int PADDLE_PADDING = 10;
 
     //  Number of bricks per row
     public static int NBRICKS_PER_ROW = 10;
@@ -172,7 +172,7 @@ public class Breakout extends GraphicsProgram {
 
                     remove(paddlePreview);
                     paddlePreview = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
-                    add(paddlePreview, gameFramePreviewer.getX() + Breakout.APPLICATION_WIDTH / 2.0, gameFramePreviewer.getY()+APPLICATION_HEIGHT- PADDLE_PADDING);
+                    add(paddlePreview, gameFramePreviewer.getX() + APPLICATION_WIDTH / 2.0, gameFramePreviewer.getY() + APPLICATION_HEIGHT - PADDLE_PADDING - paddlePreview.getHeight());
                 }
             }
 
@@ -180,7 +180,7 @@ public class Breakout extends GraphicsProgram {
             if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 2) {
                     sliderPaddlePadding.sliderMove(e.getX(), 7);
-                    PADDLE_PADDING = (int) Math.round((e.getX() - SETTING_PADDING) / 20 - paddlePreview.getHeight());
+                    PADDLE_PADDING = (e.getX() - SETTING_PADDING) / 20 + 10;
                     paddlePaddingValueLbl.setLabel(PADDLE_PADDING + "");
                     paddlePaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.3);
 

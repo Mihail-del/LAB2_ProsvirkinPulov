@@ -8,8 +8,8 @@ public class GBricksPreview extends GCompound {
         for (int i = 0; i < bricksColumns; i++) {
             for (int j = 0; j < bricksRows; j++) {
                 GRoundRect roundRect = new GRoundRect(i*(bricksWidth+Breakout.BRICK_SEP), j*(bricksHeight+Breakout.BRICK_SEP), bricksWidth, bricksHeight);
-                roundRect.setColor(Color.black);
-                roundRect.setFillColor(Color.black);
+                roundRect.setColor(Color.white);
+                roundRect.setFillColor(Color.white);
                 roundRect.setFilled(true);
                 add(roundRect);
             }
