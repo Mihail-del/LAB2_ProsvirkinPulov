@@ -359,7 +359,7 @@ public class Breakout extends GraphicsProgram {
     /** ============== MOVING MOUSE ACTIONS WITH PADDLE ============== */
     public void mouseMoved(MouseEvent e){
         if (!StartMenuEnabled){
-            double newX = e.getX() - gamePaddle.getWidth() / 2.0;;
+            double newX = e.getX();
             double currentY = gamePaddle.getY();
 
             if (newX < 0 + gamePaddle.getWidth()/2){
