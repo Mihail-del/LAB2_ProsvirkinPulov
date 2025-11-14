@@ -1,3 +1,12 @@
+/*
+ * File: GBricksPreview.java
+ * -------------------
+ * Name: Mykhailo Pulov, Veronika Prosvirkin
+ * Class Leader: Mykhailo
+ *
+ * This file is a constructor of a bricks for preview page.
+ */
+
 import acm.graphics.GCompound;
 import acm.graphics.GRoundRect;
 
