@@ -406,7 +406,7 @@ public class Breakout extends GraphicsProgram {
         paddlePaddingValueLbl = new GLabel(PADDLE_PADDING+"");
         paddlePaddingValueLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddlePaddingValueLbl.setColor(Breakout.fontColor);
-        paddlePaddingValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-paddlePaddingLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.3);
+        paddlePaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - paddlePaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.3);
         add(paddlePaddingValueLbl);
 
         sliderPaddlePadding = new GSlider(APPLICATION_WIDTH, 3, 14, PADDLE_PADDING);
