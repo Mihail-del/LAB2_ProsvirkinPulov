@@ -127,7 +127,6 @@ public class Breakout extends GraphicsProgram {
     }
     // play the main game
     private void playGame() {
-        isGameStarted = true;
         while (isGameStarted){
             ball.move(BALL_SPEED_X, BALL_SPEED_Y);
             pause(BALL_PAUSE);
@@ -138,20 +137,20 @@ public class Breakout extends GraphicsProgram {
             if (ball.getY() <= SETTING_PADDING) {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
-            if ((ball.getX() > gamePaddle.getX()-gamePaddle.getWidth()/2 && ball.getX() < gamePaddle.getX()+gamePaddle.getWidth()/2)  && (ball.getY() < gamePaddle.getY()-gamePaddle.getHeight() && ball.getY() > gamePaddle.getY()-gamePaddle.getHeight()-5)) {
+            if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0)  && (ball.getY() < gamePaddle.getY()-gamePaddle.getHeight() && ball.getY() > gamePaddle.getY()-gamePaddle.getHeight()-5)) {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
 
             if (ball.getY() >= SETTING_PADDING+APPLICATION_HEIGHT-2*BALL_RADIUS) {
                 ball.setLocation(ball.getX(), SETTING_PADDING+APPLICATION_HEIGHT-2*BALL_RADIUS); // just to check
-                // ball lost animation
-                for (int i = 0; i < 4; i++) {
+                isGameStarted = false;  //stop the game
+
+                for (int i = 0; i < 4; i++) {    // ball lost animation
                     ball.setVisible(false);
                     pause(100);
                     ball.setVisible(true);
                     pause(100);
                 }
-                isGameStarted = false;  //stop the game
             }
 
         }
@@ -168,6 +167,7 @@ public class Breakout extends GraphicsProgram {
     // main game
     private void configureApp() {
         removeAll();
+        isGameStarted = true;
         setBackground(settingsColor);
         setSize(APPLICATION_WIDTH+2*SETTING_PADDING, APPLICATION_HEIGHT+2*SETTING_PADDING);
         setSize(2*(APPLICATION_WIDTH+2*SETTING_PADDING)-getWidth(), 2*(APPLICATION_HEIGHT+2*SETTING_PADDING)-getHeight());
@@ -376,7 +376,7 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== MOVING MOUSE ACTIONS WITH PADDLE ============== */
     public void mouseMoved(MouseEvent e){
-        if (!StartMenuEnabled){
+        if (isGameStarted){
             double newX = e.getX();
             double currentY = gamePaddle.getY();
 
