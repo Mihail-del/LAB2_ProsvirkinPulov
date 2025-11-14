@@ -184,21 +184,21 @@ public class Breakout extends GraphicsProgram {
         for (int i = 0; i < bricksColumns; i++) {
             for (int j = 0; j < bricksRows; j++) {
 
-                double x = Breakout.BRICK_SEP + i * (bricksWidth + Breakout.BRICK_SEP);
-                double y = Breakout.BRICK_Y_OFFSET + j * (bricksHeight + Breakout.BRICK_SEP);
+                double x = BRICK_SEP + i * (bricksWidth + BRICK_SEP);
+                double y = BRICK_Y_OFFSET + j * (bricksHeight + BRICK_SEP);
 
                 GRoundRect roundRect = new GRoundRect(x, y, bricksWidth, bricksHeight);
                 Color brickColor;
-                if(j==0) brickColor = Breakout.brickOneColor;
-                else if(j==1) brickColor = Breakout.brickTwoColor;
-                else if(j==2) brickColor = Breakout.brickThreeColor;
-                else if(j==3) brickColor = Breakout.brickFourColor;
-                else if(j==4) brickColor = Breakout.brickFiveColor;
-                else if(j==5) brickColor = Breakout.brickSixColor;
-                else if(j==6) brickColor = Breakout.brickSevenColor;
-                else if(j==7) brickColor = Breakout.brickEightColor;
-                else if(j==8) brickColor = Breakout.brickNineColor;
-                else brickColor = Breakout.brickTenColor;
+                if(j==0) brickColor = brickOneColor;
+                else if(j==1) brickColor = brickTwoColor;
+                else if(j==2) brickColor = brickThreeColor;
+                else if(j==3) brickColor = brickFourColor;
+                else if(j==4) brickColor = brickFiveColor;
+                else if(j==5) brickColor = brickSixColor;
+                else if(j==6) brickColor = brickSevenColor;
+                else if(j==7) brickColor = brickEightColor;
+                else if(j==8) brickColor = brickNineColor;
+                else brickColor = brickTenColor;
 
                 roundRect.setColor(brickColor);
                 roundRect.setFillColor(brickColor);
@@ -414,6 +414,7 @@ public class Breakout extends GraphicsProgram {
         add(sliderPaddlePadding);
     }
 
+    /* ===== BRICKS SETTINGS AND PREVIEW ===== */
     private void bricksColumnsSettings(){
         GLabel brickColumnsLbl = new GLabel("Columns number");
         brickColumnsLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
