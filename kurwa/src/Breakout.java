@@ -122,8 +122,7 @@ public class Breakout extends GraphicsProgram {
         waitForContinue();
 
         configureApp();
-        waitForClick();
-        pause(110);
+        pause(1000);
         playGame();
     }
     // play the main game
@@ -133,16 +132,26 @@ public class Breakout extends GraphicsProgram {
             ball.move(BALL_SPEED_X, BALL_SPEED_Y);
             pause(BALL_PAUSE);
             checkBallSensors();
-            if (ball.getX() + 2*BALL_RADIUS >= getWidth() || ball.getX() <= 0) {
+            if (ball.getX() + 2*BALL_RADIUS >= SETTING_PADDING+APPLICATION_WIDTH || ball.getX() <= SETTING_PADDING) {
                 BALL_SPEED_X = -BALL_SPEED_X;
             }
-            else if (ball.getY() <= 0) {
+            if (ball.getY() <= SETTING_PADDING) {
+                BALL_SPEED_Y = -BALL_SPEED_Y;
+            }
+            if ((ball.getX() > gamePaddle.getX()-gamePaddle.getWidth()/2 && ball.getX() < gamePaddle.getX()+gamePaddle.getWidth()/2)  && (ball.getY() < gamePaddle.getY()-gamePaddle.getHeight() && ball.getY() > gamePaddle.getY()-gamePaddle.getHeight()-5)) {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
 
-            else if (ball.getY() >= getHeight() - PADDLE_PADDING - PADDLE_HEIGHT) {
-                isGameStarted = false;
-                //stop the game
+            if (ball.getY() >= SETTING_PADDING+APPLICATION_HEIGHT-2*BALL_RADIUS) {
+                ball.setLocation(ball.getX(), SETTING_PADDING+APPLICATION_HEIGHT-2*BALL_RADIUS); // just to check
+                // ball lost animation
+                for (int i = 0; i < 4; i++) {
+                    ball.setVisible(false);
+                    pause(100);
+                    ball.setVisible(true);
+                    pause(100);
+                }
+                isGameStarted = false;  //stop the game
             }
 
         }
@@ -159,19 +168,28 @@ public class Breakout extends GraphicsProgram {
     // main game
     private void configureApp() {
         removeAll();
-        setBackground(bgColor);
-        setSize(APPLICATION_WIDTH, APPLICATION_HEIGHT);
-        setSize(2*APPLICATION_WIDTH-getWidth(), 2*APPLICATION_HEIGHT-getHeight());
+        setBackground(settingsColor);
+        setSize(APPLICATION_WIDTH+2*SETTING_PADDING, APPLICATION_HEIGHT+2*SETTING_PADDING);
+        setSize(2*(APPLICATION_WIDTH+2*SETTING_PADDING)-getWidth(), 2*(APPLICATION_HEIGHT+2*SETTING_PADDING)-getHeight());
+
+        // Gaming field
+        GRoundRect gamingField = new GRoundRect(SETTING_PADDING, SETTING_PADDING, APPLICATION_WIDTH, APPLICATION_HEIGHT);
+        gamingField.setFilled(true);
+        gamingField.setColor(bgColor);
+        gamingField.setFillColor(bgColor);
+        add(gamingField);
+
+        // Paddle
         gamePaddle = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
-        add(gamePaddle, APPLICATION_WIDTH/2.0,APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT);
+        add(gamePaddle, APPLICATION_WIDTH/2.0,APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT + SETTING_PADDING);
         gameBricks(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
         gameBall(BALL_RADIUS);
     }
 
-    //ball for game
+    // Ball for game
     private void gameBall(int ballRadius) {
-        double x = APPLICATION_WIDTH / 2.0 - BALL_RADIUS;
-        double y = APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT/2.0 - (2 * BALL_RADIUS);
+        double x = (APPLICATION_WIDTH+SETTING_PADDING) / 2.0 - BALL_RADIUS;
+        double y = APPLICATION_HEIGHT + SETTING_PADDING - PADDLE_PADDING - PADDLE_HEIGHT/2.0 - (4 * BALL_RADIUS);
         ball = new GOval(x, y, 2 * BALL_RADIUS, 2 * BALL_RADIUS);
 
         ball.setFilled(true);
@@ -186,8 +204,8 @@ public class Breakout extends GraphicsProgram {
         for (int i = 0; i < bricksColumns; i++) {
             for (int j = 0; j < bricksRows; j++) {
 
-                double x = BRICK_SEP + i * (bricksWidth + BRICK_SEP);
-                double y = BRICK_Y_OFFSET + j * (bricksHeight + BRICK_SEP);
+                double x = BRICK_SEP + SETTING_PADDING + i * (bricksWidth + BRICK_SEP);
+                double y = BRICK_Y_OFFSET + SETTING_PADDING + j * (bricksHeight + BRICK_SEP);
 
                 GRoundRect roundRect = new GRoundRect(x, y, bricksWidth, bricksHeight);
                 Color brickColor;
@@ -362,11 +380,11 @@ public class Breakout extends GraphicsProgram {
             double newX = e.getX();
             double currentY = gamePaddle.getY();
 
-            if (newX < 0 + gamePaddle.getWidth()/2){
-                newX=0 + gamePaddle.getWidth()/2;
+            if (newX < SETTING_PADDING + gamePaddle.getWidth()/2){
+                newX= SETTING_PADDING + gamePaddle.getWidth()/2;
             }
-            if (newX > getWidth() - gamePaddle.getWidth()/2) {
-                newX = getWidth() - gamePaddle.getWidth()/2;
+            if (newX > APPLICATION_WIDTH+SETTING_PADDING - gamePaddle.getWidth()/2) {
+                newX = APPLICATION_WIDTH+SETTING_PADDING - gamePaddle.getWidth()/2;
             }
 
             gamePaddle.setLocation(newX, currentY);
