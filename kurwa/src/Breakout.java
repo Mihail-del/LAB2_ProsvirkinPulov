@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 15:00 | 13.11.2025
+ * Last update: 02:30 | 14.11.2025
  */
 
 import acm.graphics.*;
@@ -50,6 +50,15 @@ public class Breakout extends GraphicsProgram {
     //  Radius of the ball in pixels
     public static int BALL_RADIUS = 10;
 
+    //  Speed of the ball X axis
+    public static int BALL_SPEED_X = 3;
+
+    //  Speed of the ball Y axis
+    public static int BALL_SPEED_Y = -3;
+
+    //  Paused delay for the ball in milliseconds
+    public static int BALL_PAUSE = 5;
+
     //  Offset of the top brick row from the top
     public static int BRICK_Y_OFFSET = 70;
 
@@ -59,7 +68,7 @@ public class Breakout extends GraphicsProgram {
     /** ===== VARIABLES ====== */
     private boolean StartMenuEnabled = false;
     private boolean waitingContinue = false;
-    private boolean isGameStarted;
+    private boolean isGameStarted = false;
 
 
     private int actionSlider = 0;
@@ -111,12 +120,37 @@ public class Breakout extends GraphicsProgram {
         waitForContinue();
 
         configureApp();
+        waitForClick();
+        pause(110);
         playGame();
     }
     // play the main game
     private void playGame() {
-        waitForClick();
+        isGameStarted = true;
+        while (isGameStarted){
+            ball.move(BALL_SPEED_X, BALL_SPEED_Y);
+            pause(BALL_PAUSE);
+            checkBallSensors();
+            if (ball.getX() + 2*BALL_RADIUS >= getWidth() || ball.getX() <= 0) {
+                BALL_SPEED_X = -BALL_SPEED_X;
+            }
+            else if (ball.getY() <= 0) {
+                BALL_SPEED_Y = -BALL_SPEED_Y;
+            }
 
+            else if (ball.getY() >= getHeight() - PADDLE_PADDING - PADDLE_HEIGHT) {
+                isGameStarted = false;
+                //stop the game
+            }
+
+        }
+
+
+    }
+
+    private Object checkBallSensors() {
+        //not finished, I wanna sleep
+        return null;
     }
 
     /** ============== APP CONFIGURATION ============== */
