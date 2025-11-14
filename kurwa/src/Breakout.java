@@ -60,7 +60,7 @@ public class Breakout extends GraphicsProgram {
     public static int BALL_PAUSE = 5;
 
     //  Offset of the top brick row from the top
-    public static int BRICK_Y_OFFSET = 70;
+    public static double BRICK_Y_OFFSET = (int) Math.round(BRICK_SEP);
 
     //  Number of turns
     public static int NTURNS = 3;
@@ -89,6 +89,8 @@ public class Breakout extends GraphicsProgram {
     GLabel bricksColumnsValueLbl;
     GSlider sliderBricksRows;
     GLabel bricksRowsValueLbl;
+    GSlider sliderBricksPadding;
+    GLabel bricksPaddingValueLbl;
 
     /** ============== COLOR PALETTE ============== */
     public static Color bgColor = new Color(37, 51, 61);
@@ -220,6 +222,7 @@ public class Breakout extends GraphicsProgram {
         paddleSettings();
         bricksColumnsSettings();
         bricksRowsSettings();
+        bricksPaddingSettings();
 
         preview();
         saveStartMenu();
@@ -247,6 +250,11 @@ public class Breakout extends GraphicsProgram {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.57 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.57 + 20) {
                     actionSlider = 4;
                     System.out.println(4);
+                }
+
+                if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.67 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.67 + 20) {
+                    actionSlider = 5;
+                    System.out.println(5);
                 }
             }
 
@@ -311,7 +319,7 @@ public class Breakout extends GraphicsProgram {
 
                     remove(bricksPreview);
                     bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
-                    add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_SEP);                }
+                    add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_Y_OFFSET);                }
             }
 
             // BRICKS ROWS NUMBER
@@ -320,12 +328,29 @@ public class Breakout extends GraphicsProgram {
                     sliderBricksRows.sliderMove(e.getX(), 7);
                     int one_section = APPLICATION_WIDTH/9;
                     NBRICK_ROWS = (e.getX() - SETTING_PADDING) / one_section+1;
+                    if (NBRICK_ROWS>10)  NBRICK_ROWS=10;
                     bricksRowsValueLbl.setLabel(NBRICK_ROWS + "");
                     bricksRowsValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksRowsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.55);
 
                     remove(bricksPreview);
                     bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
-                    add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_SEP);                }
+                    add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_Y_OFFSET);                }
+            }
+
+            // BRICKS TOP PADDING NUMBER
+            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+                if (actionSlider == 5) {
+                    sliderBricksPadding.sliderMove(e.getX(), 7);
+                    int one_section = APPLICATION_WIDTH/60;
+                    BRICK_Y_OFFSET = (e.getX() - SETTING_PADDING) / one_section + BRICK_SEP;
+                    if (BRICK_Y_OFFSET>50)  BRICK_Y_OFFSET=50;
+                    bricksPaddingValueLbl.setLabel((int) Math.round(BRICK_Y_OFFSET) + "");
+                    bricksPaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
+
+                    remove(bricksPreview);
+                    bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
+                    add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_Y_OFFSET);
+                }
             }
         }
     }
@@ -414,7 +439,7 @@ public class Breakout extends GraphicsProgram {
         add(sliderPaddlePadding);
     }
 
-    /* ===== BRICKS SETTINGS AND PREVIEW ===== */
+    /* ===== BRICKS COLUMNS SETTINGS AND PREVIEW ===== */
     private void bricksColumnsSettings(){
         GLabel brickColumnsLbl = new GLabel("Columns number");
         brickColumnsLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
@@ -428,11 +453,12 @@ public class Breakout extends GraphicsProgram {
         bricksColumnsValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-bricksColumnsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.45);
         add(bricksColumnsValueLbl);
 
-        sliderBricksColumns = new GSlider(APPLICATION_WIDTH, 3, 14, (APPLICATION_WIDTH-SETTING_PADDING)*0.45);
+        sliderBricksColumns = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.5-SETTING_PADDING);
         sliderBricksColumns.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.47);
         add(sliderBricksColumns);
     }
 
+    /* ===== BRICKS ROWS SETTINGS AND PREVIEW ===== */
     private void bricksRowsSettings(){
         GLabel brickRowsLbl = new GLabel("Rows number");
         brickRowsLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
@@ -446,10 +472,30 @@ public class Breakout extends GraphicsProgram {
         bricksRowsValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-bricksRowsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.55);
         add(bricksRowsValueLbl);
 
-        sliderBricksRows = new GSlider(APPLICATION_WIDTH, 3, 14, (APPLICATION_WIDTH-SETTING_PADDING)*0.45);
+        sliderBricksRows = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.5-SETTING_PADDING);
         sliderBricksRows.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.57);
         add(sliderBricksRows);
     }
+
+    /* ===== BRICKS Y-OFFSET SETTINGS AND PREVIEW ===== */
+    private void bricksPaddingSettings(){
+        GLabel brickPaddingLbl = new GLabel("Bricks top padding");
+        brickPaddingLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        brickPaddingLbl.setColor(Breakout.fontColor);
+        brickPaddingLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.65);
+        add(brickPaddingLbl);
+
+        bricksPaddingValueLbl = new GLabel((int) Math.round(BRICK_Y_OFFSET)+"");
+        bricksPaddingValueLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        bricksPaddingValueLbl.setColor(Breakout.fontColor);
+        bricksPaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
+        add(bricksPaddingValueLbl);
+
+        sliderBricksPadding = new GSlider(APPLICATION_WIDTH, 3, 14, -SETTING_PADDING);
+        sliderBricksPadding.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.67);
+        add(sliderBricksPadding);
+    }
+
 
 
 
@@ -481,6 +527,6 @@ public class Breakout extends GraphicsProgram {
         add(paddlePreview, gameFramePreviewer.getX() + APPLICATION_WIDTH / 2.0, gameFramePreviewer.getY() + APPLICATION_HEIGHT - PADDLE_PADDING - paddlePreview.getHeight());
 
         bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
-        add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_SEP);
+        add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_Y_OFFSET);
     }
 }
