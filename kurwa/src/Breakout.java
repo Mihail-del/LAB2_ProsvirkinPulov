@@ -231,7 +231,7 @@ public class Breakout extends GraphicsProgram {
     /** ============== PRESSED MOUSE ACTIONS ============== */
     public void mousePressed(MouseEvent e) {
         if(StartMenuEnabled) {
-            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (e.getX() >= SETTING_PADDING - 10 && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH + 10) {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.22 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.22 + 20) {
                     actionSlider = 1;
                     System.out.println(1);
