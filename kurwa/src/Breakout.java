@@ -341,9 +341,9 @@ public class Breakout extends GraphicsProgram {
             if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 5) {
                     sliderBricksPadding.sliderMove(e.getX(), 7);
-                    int one_section = APPLICATION_WIDTH/60;
+                    int one_section = APPLICATION_WIDTH/70;
                     BRICK_Y_OFFSET = (e.getX() - SETTING_PADDING) / one_section + BRICK_SEP;
-                    if (BRICK_Y_OFFSET>50)  BRICK_Y_OFFSET=50;
+                    if (BRICK_Y_OFFSET>70)  BRICK_Y_OFFSET=70;
                     bricksPaddingValueLbl.setLabel((int) Math.round(BRICK_Y_OFFSET) + "");
                     bricksPaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
 
