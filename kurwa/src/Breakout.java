@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 02:14 | 15.11.2025
+ * Last update: 02:35 | 15.11.2025
  */
 
 import acm.graphics.*;
