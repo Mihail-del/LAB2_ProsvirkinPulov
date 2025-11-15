@@ -177,7 +177,7 @@ public class Breakout extends GraphicsProgram {
                 ball.setLocation(ball.getX(), SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);// just to check
                 livesLeft --;
                 GImage heartToRemove = hearts.get(livesLeft);
-                for (int i = 0; i < 4; i++) {    // ball lost animation
+                for (int i = 0; i < 4; i++) {    // heart lost animation
                     heartToRemove.setVisible(false);
                     pause(100);
                     heartToRemove.setVisible(true);
@@ -200,28 +200,32 @@ public class Breakout extends GraphicsProgram {
                     isGameStarted = false;
                 }
             }
-            for (int i = particlesList.size()-1; i >= 0; i--) {
-                GOval particle = (GOval) particlesList.get(i);
-                double dx = particleSpeedsX.get(i);
-                double dy = particleSpeedsY.get(i);
-                particle.move(dx, dy);
-                particleSpeedsY.set(i, dy + 0.1);
-                if (particle.getY() > getHeight()*2.0/3.0) {
-                    remove(particle);
-                    particlesList.remove(i);
-                    particleSpeedsX.remove(i);
-                    particleSpeedsY.remove(i);
-                }
 
+            new Thread(() -> moveParticles()).start();
+        }
+    }
+
+    /** ===== CREATING PARTICLES ===== */
+    private void moveParticles() {
+        for (int i = particlesList.size()-1; i >= 0; i--) {
+            GOval particle = (GOval) particlesList.get(i);
+            double dx = particleSpeedsX.get(i);
+            double dy = particleSpeedsY.get(i);
+            particle.move(dx, dy);
+            particleSpeedsY.set(i, dy + 0.1);
+            if (particle.getY() > getHeight()*2.0/3.0) {
+                remove(particle);
+                particlesList.remove(i);
+                particleSpeedsX.remove(i);
+                particleSpeedsY.remove(i);
             }
-
         }
     }
 
     //animation for destroying bricks
     private void createBrickParticles(GObject brick){
-        double x = brick.getX();
-        double y = brick.getY();
+        double x = brick.getX()+BRICK_WIDTH/2.0;
+        double y = brick.getY()+BRICK_HEIGHT/2.0;
         Color color = brick.getColor();
         remove(brick);
         for (int i = 0; i < 10; i++) {
