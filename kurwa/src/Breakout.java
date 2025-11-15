@@ -145,9 +145,12 @@ public class Breakout extends GraphicsProgram {
             pause(BALL_PAUSE);
             Object collider = checkBallSensors();
             if (collider != null) {
-                if (collider == gamePaddle){}
-                else if (collider == gamingField) {} //ignore field
-                else if (particlesList.contains(collider)) {} //ignore particles
+                if (collider == gamePaddle){
+                    BALL_SPEED_Y = -BALL_SPEED_Y;
+                }
+                else if (collider == gamingField) {}            //ignore field
+                else if (particlesList.contains(collider)) {}   //ignore particles
+                else if (collider == hearts) {}                 //ignore hearts
                 else { //bricks
                     createBrickParticles((GObject) collider);
                     BALL_SPEED_Y = -BALL_SPEED_Y;
