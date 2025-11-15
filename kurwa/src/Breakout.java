@@ -160,14 +160,14 @@ public class Breakout extends GraphicsProgram {
                 }
             }
             else {
-                if (ball.getX() <= SETTING_PADDING) {
+                if (ball.getX()+BALL_SPEED_X <= SETTING_PADDING) {
                     BALL_SPEED_X = -BALL_SPEED_X;
                 }
 
-                else if (ball.getX() + 2 * BALL_RADIUS >= SETTING_PADDING + APPLICATION_WIDTH) {
+                else if (ball.getX() + 2 * BALL_RADIUS + BALL_SPEED_X>= SETTING_PADDING + APPLICATION_WIDTH) {
                     BALL_SPEED_X = -BALL_SPEED_X;
                 }
-                else if (ball.getY() <= SETTING_PADDING) {
+                else if (ball.getY() +BALL_SPEED_Y <= SETTING_PADDING) {
                     BALL_SPEED_Y = -BALL_SPEED_Y;
                 }
 
