@@ -300,9 +300,9 @@ public class Breakout extends GraphicsProgram {
         hearts.clear();
         for (int i = 0; i<livesLeft; i++){
             GImage heart = new GImage("heart.png");
-            heart.setSize(25, 25);
-            double x = 30 + (heart.getWidth() +10)* i;
-            double y = 0;
+            heart.setSize(SETTING_PADDING*0.8, SETTING_PADDING*0.8);
+            double x = SETTING_PADDING + (heart.getWidth() +10)* i;
+            double y = SETTING_PADDING*0.1;
             heart.setLocation(x, y);
             hearts.add(heart);
             add(heart);
