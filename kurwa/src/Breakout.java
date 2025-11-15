@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 15:30 | 15.11.2025
+ * Last update: 01:36 | 16.11.2025
  */
 
 import acm.graphics.*;
@@ -145,12 +145,10 @@ public class Breakout extends GraphicsProgram {
             pause(BALL_PAUSE);
             Object collider = checkBallSensors();
             if (collider != null) {
-                if (collider == gamePaddle){
-                    BALL_SPEED_Y = -BALL_SPEED_Y;
-                }
-                else if (collider == gamingField) {}            //ignore field
+                if (collider == gamePaddle)         {BALL_SPEED_Y = -BALL_SPEED_Y;}
+                else if (collider == gamingField)   {}            //ignore field
                 else if (particlesList.contains(collider)) {}   //ignore particles
-                else if (collider == hearts) {}                 //ignore hearts
+                else if (collider == hearts)        {}                 //ignore hearts
                 else { //bricks
                     createBrickParticles((GObject) collider);
                     BALL_SPEED_Y = -BALL_SPEED_Y;
@@ -246,30 +244,47 @@ public class Breakout extends GraphicsProgram {
 
     }
 
-    private Object checkBallSensors() {
+    /** ===== CHECK BALL COLISIONS WITH OBJECTS ===== */
+    // More accurate collision check without arrays
+    private GObject checkBallSensors() {
+        double x = ball.getX();
+        double y = ball.getY();
+        double d = 2 * BALL_RADIUS;
+        double r = BALL_RADIUS;
+
         GObject obj;
-        double diam = 2 * BALL_RADIUS;
-        obj = getElementAt(ball.getX(), ball.getY());
-            if (obj != null) {
-                return obj;
-            }
-            obj = getElementAt(ball.getX() + diam, ball.getY());
-            if (obj != null) {
-                return obj;
-            }
 
-            obj = getElementAt(ball.getX(), ball.getY() + diam);
-            if (obj != null) {
-                return obj;
-            }
+        obj = getElementAt(x, y);  // top-left corner
+        if (obj != null && obj != ball) return obj;
 
-            obj = getElementAt(ball.getX() + diam, ball.getY() + diam);
-            if (obj != null) {
-                return obj;
-            }
+        obj = getElementAt(x + d, y);  // top-right corner
+        if (obj != null && obj != ball) return obj;
 
-            return null;
-        }
+        obj = getElementAt(x, y + d); // bottom-left corner
+        if (obj != null && obj != ball) return obj;
+
+        obj = getElementAt(x + d, y + d); // bottom-right corner
+        if (obj != null && obj != ball) return obj;
+
+        obj = getElementAt(x + r, y); // top-middle
+        if (obj != null && obj != ball) return obj;
+
+        obj = getElementAt(x + r, y + d); // bottom-middle
+        if (obj != null && obj != ball) return obj;
+
+        obj = getElementAt(x, y + r);  // left-middle
+        if (obj != null && obj != ball) return obj;
+
+        obj = getElementAt(x + d, y + r); // right-middle
+        if (obj != null && obj != ball) return obj;
+
+        obj = getElementAt(x + r, y + r); // center
+        if (obj != null && obj != ball) return obj;
+
+        return null;
+    }
+
+
 
     /** ============== APP CONFIGURATION ============== */
     // main game
