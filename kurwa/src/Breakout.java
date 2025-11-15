@@ -50,11 +50,10 @@ public class Breakout extends GraphicsProgram {
     //  Radius of the ball in pixels
     public static int BALL_RADIUS = 10;
 
-    //  Speed of the ball X axis
-    public static int BALL_SPEED_X = 3;
-
-    //  Speed of the ball Y axis
-    public static int BALL_SPEED_Y = -3;
+    //  Speed of the ball
+    public static int BALL_GENERAL_SPEED = 3;
+    public static int BALL_SPEED_X = BALL_GENERAL_SPEED; // X axis
+    public static int BALL_SPEED_Y = -BALL_GENERAL_SPEED; // Y axis
 
     //  Paused delay for the ball in milliseconds
     public static int BALL_PAUSE = 5;
@@ -91,6 +90,9 @@ public class Breakout extends GraphicsProgram {
     GLabel bricksRowsValueLbl;
     GSlider sliderBricksPadding;
     GLabel bricksPaddingValueLbl;
+
+    GSlider sliderBallSpeed;
+    GLabel ballSpeedValueLbl;
 
     /** ============== COLOR PALETTE ============== */
     public static Color bgColor = new Color(37, 51, 61);
@@ -137,7 +139,7 @@ public class Breakout extends GraphicsProgram {
             if (ball.getY() <= SETTING_PADDING) {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
-            if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0)  && (ball.getY() < gamePaddle.getY()-gamePaddle.getHeight() && ball.getY() > gamePaddle.getY()-gamePaddle.getHeight()-5)) {
+            if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0+BALL_RADIUS)  && (ball.getY() < gamePaddle.getY()-PADDLE_HEIGHT && ball.getY() >= gamePaddle.getY()-PADDLE_HEIGHT-BALL_GENERAL_SPEED)) {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
 
@@ -241,6 +243,7 @@ public class Breakout extends GraphicsProgram {
         bricksColumnsSettings();
         bricksRowsSettings();
         bricksPaddingSettings();
+        ballSpeedSettings();
 
         preview();
         saveStartMenu();
@@ -273,6 +276,11 @@ public class Breakout extends GraphicsProgram {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.67 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.67 + 20) {
                     actionSlider = 5;
                     System.out.println(5);
+                }
+
+                if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.82 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.82 + 20) {
+                    actionSlider = 6;
+                    System.out.println(6);
                 }
             }
 
@@ -370,6 +378,20 @@ public class Breakout extends GraphicsProgram {
                     add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_Y_OFFSET);
                 }
             }
+
+            // BALL SPEED
+            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+                if (actionSlider == 6) {
+                    sliderBallSpeed.sliderMove(e.getX(), 7);
+                    int one_section = APPLICATION_WIDTH/9;
+                    BALL_GENERAL_SPEED = (int) Math.round((e.getX() - SETTING_PADDING) / one_section + 1);
+                    BALL_SPEED_X = BALL_GENERAL_SPEED;
+                    BALL_SPEED_Y = -BALL_GENERAL_SPEED;
+                    if (BRICK_Y_OFFSET>10)  BRICK_Y_OFFSET=10;
+                    ballSpeedValueLbl.setLabel(BALL_GENERAL_SPEED + "");
+                    ballSpeedValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - ballSpeedValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.80);
+                }
+            }
         }
     }
 
@@ -424,13 +446,13 @@ public class Breakout extends GraphicsProgram {
     private void paddleSettings(){
         // WIDTH
         GLabel paddleWidthLbl = new GLabel("Paddle width");
-        paddleWidthLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        paddleWidthLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddleWidthLbl.setColor(Breakout.fontColor);
         paddleWidthLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
         add(paddleWidthLbl);
 
         paddleWidthValueLbl = new GLabel(PADDLE_WIDTH+"");
-        paddleWidthValueLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        paddleWidthValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddleWidthValueLbl.setColor(Breakout.fontColor);
         paddleWidthValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
         add(paddleWidthValueLbl);
@@ -441,13 +463,13 @@ public class Breakout extends GraphicsProgram {
 
         // BOTTOM PADDING
         GLabel paddlePaddingLbl = new GLabel("Paddle bottom padding");
-        paddlePaddingLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        paddlePaddingLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddlePaddingLbl.setColor(Breakout.fontColor);
         paddlePaddingLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.3);
         add(paddlePaddingLbl);
 
         paddlePaddingValueLbl = new GLabel(PADDLE_PADDING+"");
-        paddlePaddingValueLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        paddlePaddingValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddlePaddingValueLbl.setColor(Breakout.fontColor);
         paddlePaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - paddlePaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.3);
         add(paddlePaddingValueLbl);
@@ -460,13 +482,13 @@ public class Breakout extends GraphicsProgram {
     /* ===== BRICKS COLUMNS SETTINGS AND PREVIEW ===== */
     private void bricksColumnsSettings(){
         GLabel brickColumnsLbl = new GLabel("Columns number");
-        brickColumnsLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        brickColumnsLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         brickColumnsLbl.setColor(Breakout.fontColor);
         brickColumnsLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.45);
         add(brickColumnsLbl);
 
         bricksColumnsValueLbl = new GLabel(NBRICKS_PER_ROW+"");
-        bricksColumnsValueLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        bricksColumnsValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         bricksColumnsValueLbl.setColor(Breakout.fontColor);
         bricksColumnsValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-bricksColumnsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.45);
         add(bricksColumnsValueLbl);
@@ -479,13 +501,13 @@ public class Breakout extends GraphicsProgram {
     /* ===== BRICKS ROWS SETTINGS AND PREVIEW ===== */
     private void bricksRowsSettings(){
         GLabel brickRowsLbl = new GLabel("Rows number");
-        brickRowsLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        brickRowsLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         brickRowsLbl.setColor(Breakout.fontColor);
         brickRowsLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.55);
         add(brickRowsLbl);
 
         bricksRowsValueLbl = new GLabel(NBRICK_ROWS+"");
-        bricksRowsValueLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        bricksRowsValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         bricksRowsValueLbl.setColor(Breakout.fontColor);
         bricksRowsValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-bricksRowsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.55);
         add(bricksRowsValueLbl);
@@ -498,13 +520,13 @@ public class Breakout extends GraphicsProgram {
     /* ===== BRICKS Y-OFFSET SETTINGS AND PREVIEW ===== */
     private void bricksPaddingSettings(){
         GLabel brickPaddingLbl = new GLabel("Bricks top padding");
-        brickPaddingLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        brickPaddingLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         brickPaddingLbl.setColor(Breakout.fontColor);
         brickPaddingLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.65);
         add(brickPaddingLbl);
 
         bricksPaddingValueLbl = new GLabel((int) Math.round(BRICK_Y_OFFSET)+"");
-        bricksPaddingValueLbl.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        bricksPaddingValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         bricksPaddingValueLbl.setColor(Breakout.fontColor);
         bricksPaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
         add(bricksPaddingValueLbl);
@@ -512,6 +534,25 @@ public class Breakout extends GraphicsProgram {
         sliderBricksPadding = new GSlider(APPLICATION_WIDTH, 3, 14, -SETTING_PADDING);
         sliderBricksPadding.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.67);
         add(sliderBricksPadding);
+    }
+
+    /* ===== BALL SPEED ===== */
+    private void ballSpeedSettings(){
+        GLabel ballSpeedLbl = new GLabel("Ball speed");
+        ballSpeedLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        ballSpeedLbl.setColor(Breakout.fontColor);
+        ballSpeedLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.8);
+        add(ballSpeedLbl);
+
+        ballSpeedValueLbl = new GLabel((int) Math.round(BALL_GENERAL_SPEED)+"");
+        ballSpeedValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        ballSpeedValueLbl.setColor(Breakout.fontColor);
+        ballSpeedValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - ballSpeedValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.8);
+        add(ballSpeedValueLbl);
+
+        sliderBallSpeed = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.3-SETTING_PADDING);
+        sliderBallSpeed.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.82);
+        add(sliderBallSpeed);
     }
 
 
@@ -528,7 +569,7 @@ public class Breakout extends GraphicsProgram {
         add(savebtn);
 
         GLabel savebtnLabel = new GLabel("Save settings");
-        savebtnLabel.setFont("Monospased-"+(int) Math.round(APPLICATION_WIDTH*0.05));
+        savebtnLabel.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         savebtnLabel.setColor(Breakout.bgColor);
         savebtnLabel.setLocation(savebtn.getX()+(savebtn.getWidth()-savebtnLabel.getWidth())*0.5, savebtn.getY()+(savebtn.getHeight()+savebtnLabel.getHeight())*0.42);
         add(savebtnLabel);
