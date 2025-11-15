@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 01:10 | 15.11.2025
+ * Last update: 02:14 | 15.11.2025
  */
 
 import acm.graphics.*;
@@ -239,6 +239,7 @@ public class Breakout extends GraphicsProgram {
         setSize(2*SETTING_WINDOW_WIDTH-getWidth(), 2*SETTING_WINDOW_HEIGHT-getHeight());
         StartMenuEnabled = true;
         header();
+        maketDraw();
         paddleSettings();
         bricksColumnsSettings();
         bricksRowsSettings();
@@ -442,6 +443,24 @@ public class Breakout extends GraphicsProgram {
         add(image);
     }
 
+    /* ===== MAKET FRAMES ===== */
+    private void maketDraw(){
+        GRoundRect sectionOne = new GRoundRect(SETTING_PADDING*0.6, SETTING_WINDOW_HEIGHT*0.15, APPLICATION_WIDTH+SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
+        sectionOne.setFilled(true);
+        sectionOne.setFillColor(bgColor);
+        add(sectionOne);
+
+        GRoundRect sectionTwo = new GRoundRect(SETTING_PADDING*0.6, SETTING_WINDOW_HEIGHT*0.4, APPLICATION_WIDTH+SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.3);
+        sectionTwo.setFilled(true);
+        sectionTwo.setFillColor(bgColor);
+        add(sectionTwo);
+
+        GRoundRect sectionThree = new GRoundRect(SETTING_PADDING*0.6, SETTING_WINDOW_HEIGHT*0.75, APPLICATION_WIDTH+SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.1);
+        sectionThree.setFilled(true);
+        sectionThree.setFillColor(bgColor);
+        add(sectionThree);
+    }
+
     /* ===== PADDLE SETTINGS AND PREVIEW ===== */
     private void paddleSettings(){
         // WIDTH
@@ -531,7 +550,7 @@ public class Breakout extends GraphicsProgram {
         bricksPaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
         add(bricksPaddingValueLbl);
 
-        sliderBricksPadding = new GSlider(APPLICATION_WIDTH, 3, 14, -SETTING_PADDING);
+        sliderBricksPadding = new GSlider(APPLICATION_WIDTH, 3, 14, -SETTING_PADDING+7);
         sliderBricksPadding.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.67);
         add(sliderBricksPadding);
     }
@@ -577,7 +596,7 @@ public class Breakout extends GraphicsProgram {
 
     /* ===== PREVIEW ===== */
     private void preview(){
-        gameFramePreviewer = new GRect(APPLICATION_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
+        gameFramePreviewer = new GRoundRect(APPLICATION_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
         gameFramePreviewer.setFillColor(Breakout.bgColor);
         add(gameFramePreviewer);
