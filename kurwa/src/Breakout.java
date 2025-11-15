@@ -145,9 +145,7 @@ public class Breakout extends GraphicsProgram {
             pause(BALL_PAUSE);
             Object collider = checkBallSensors();
             if (collider != null) {
-                if (collider == gamePaddle){
-                    BALL_SPEED_Y = -BALL_SPEED_Y;
-                }
+                if (collider == gamePaddle){}
                 else if (collider == gamingField) {} //ignore field
                 else if (particlesList.contains(collider)) {} //ignore particles
                 else { //bricks
@@ -159,44 +157,44 @@ public class Breakout extends GraphicsProgram {
                     }
                 }
             }
-            else {
-                if (ball.getX()+BALL_SPEED_X <= SETTING_PADDING) {
-                    BALL_SPEED_X = -BALL_SPEED_X;
-                }
 
-                else if (ball.getX() + 2 * BALL_RADIUS + BALL_SPEED_X>= SETTING_PADDING + APPLICATION_WIDTH) {
-                    BALL_SPEED_X = -BALL_SPEED_X;
+            if (ball.getX()+BALL_SPEED_X <= SETTING_PADDING) {
+                BALL_SPEED_X = -BALL_SPEED_X;
+            }
+            if (ball.getX() + 2 * BALL_RADIUS + BALL_SPEED_X>= SETTING_PADDING + APPLICATION_WIDTH) {
+                BALL_SPEED_X = -BALL_SPEED_X;
+            }
+            if (ball.getY() +BALL_SPEED_Y <= SETTING_PADDING) {
+                BALL_SPEED_Y = -BALL_SPEED_Y;
+            }
+            if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0+BALL_RADIUS)  && (ball.getY() < gamePaddle.getY()-PADDLE_HEIGHT && ball.getY() >= gamePaddle.getY()-PADDLE_HEIGHT-BALL_GENERAL_SPEED)) {
+                BALL_SPEED_Y = -BALL_SPEED_Y;
+            }
+            if (ball.getY() >= SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
+                ball.setLocation(ball.getX(), SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);// just to check
+                livesLeft --;
+                GImage heartToRemove = hearts.get(livesLeft);
+                for (int i = 0; i < 4; i++) {    // ball lost animation
+                    heartToRemove.setVisible(false);
+                    pause(100);
+                    heartToRemove.setVisible(true);
+                    pause(100);
                 }
-                else if (ball.getY() +BALL_SPEED_Y <= SETTING_PADDING) {
-                    BALL_SPEED_Y = -BALL_SPEED_Y;
+                remove(heartToRemove);
+                for (int i = 0; i < 4; i++) {    // ball lost animation
+                    ball.setVisible(false);
+                    pause(100);
+                    ball.setVisible(true);
+                    pause(100);
                 }
-
-                else if (ball.getY() >= SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
-                    ball.setLocation(ball.getX(), SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);// just to check
-                    livesLeft --;
-                    GImage heartToRemove = hearts.get(livesLeft);
-                    for (int i = 0; i < 4; i++) {    // ball lost animation
-                        heartToRemove.setVisible(false);
-                        pause(100);
-                        heartToRemove.setVisible(true);
-                        pause(100);
-                    }
-                    remove(heartToRemove);
-                    for (int i = 0; i < 4; i++) {    // ball lost animation
-                        ball.setVisible(false);
-                        pause(100);
-                        ball.setVisible(true);
-                        pause(100);
-                    }
-                    remove(ball);
-                    if (livesLeft > 0) {
-                        gameBall(BALL_RADIUS);
-                        BALL_SPEED_Y = -BALL_GENERAL_SPEED;
-                        pause(3000);
-                    }
-                    else {
-                        isGameStarted = false;
-                    }
+                remove(ball);
+                if (livesLeft > 0) {
+                    gameBall(BALL_RADIUS);
+                    BALL_SPEED_Y = -BALL_GENERAL_SPEED;
+                    pause(3000);
+                }
+                else {
+                    isGameStarted = false;
                 }
             }
             for (int i = particlesList.size()-1; i >= 0; i--) {
