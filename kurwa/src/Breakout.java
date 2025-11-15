@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 02:35 | 15.11.2025
+ * Last update: 15:30 | 15.11.2025
  */
 
 import acm.graphics.*;
@@ -13,6 +13,7 @@ import acm.program.*;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class Breakout extends GraphicsProgram {
     /** ============== CONSTANTS ============== */
@@ -58,6 +59,9 @@ public class Breakout extends GraphicsProgram {
     //  Paused delay for the ball in milliseconds
     public static int BALL_PAUSE = 5;
 
+    //number of lives
+    public static int LIVES = 3;
+
     //  Offset of the top brick row from the top
     public static double BRICK_Y_OFFSET = (int) Math.round(BRICK_SEP);
 
@@ -69,8 +73,14 @@ public class Breakout extends GraphicsProgram {
     private boolean waitingContinue = false;
     private boolean isGameStarted = false;
 
-
+    private ArrayList<GOval> particlesList = new ArrayList<GOval>();
+    private ArrayList<Double> particleSpeedsX = new ArrayList<Double>();
+    private ArrayList<Double> particleSpeedsY = new ArrayList<Double>();
+    private ArrayList<GImage> hearts = new ArrayList<GImage>();
     private int actionSlider = 0;
+    private int livesLeft;      //
+    private int bricksLeft;
+
 
     GRect gameFramePreviewer;
 
@@ -90,6 +100,7 @@ public class Breakout extends GraphicsProgram {
     GLabel bricksRowsValueLbl;
     GSlider sliderBricksPadding;
     GLabel bricksPaddingValueLbl;
+    GRect gamingField;
 
     GSlider sliderBallSpeed;
     GLabel ballSpeedValueLbl;
@@ -132,50 +143,144 @@ public class Breakout extends GraphicsProgram {
         while (isGameStarted){
             ball.move(BALL_SPEED_X, BALL_SPEED_Y);
             pause(BALL_PAUSE);
-            checkBallSensors();
-            if (ball.getX() + 2*BALL_RADIUS >= SETTING_PADDING+APPLICATION_WIDTH || ball.getX() <= SETTING_PADDING) {
-                BALL_SPEED_X = -BALL_SPEED_X;
-            }
-            if (ball.getY() <= SETTING_PADDING) {
-                BALL_SPEED_Y = -BALL_SPEED_Y;
-            }
-            if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0+BALL_RADIUS)  && (ball.getY() < gamePaddle.getY()-PADDLE_HEIGHT && ball.getY() >= gamePaddle.getY()-PADDLE_HEIGHT-BALL_GENERAL_SPEED)) {
-                BALL_SPEED_Y = -BALL_SPEED_Y;
-            }
-
-            if (ball.getY() >= SETTING_PADDING+APPLICATION_HEIGHT-2*BALL_RADIUS) {
-                ball.setLocation(ball.getX(), SETTING_PADDING+APPLICATION_HEIGHT-2*BALL_RADIUS); // just to check
-                isGameStarted = false;  //stop the game
-
-                for (int i = 0; i < 4; i++) {    // ball lost animation
-                    ball.setVisible(false);
-                    pause(100);
-                    ball.setVisible(true);
-                    pause(100);
+            Object collider = checkBallSensors();
+            if (collider != null) {
+                if (collider == gamePaddle){
+                    BALL_SPEED_Y = -BALL_SPEED_Y;
+                }
+                else if (collider == gamingField) {} //ignore field
+                else if (particlesList.contains(collider)) {} //ignore particles
+                else { //bricks
+                    createBrickParticles((GObject) collider);
+                    BALL_SPEED_Y = -BALL_SPEED_Y;
+                    bricksLeft = bricksLeft - 1;
+                    if (bricksLeft == 0) {
+                        isGameStarted = false; // game stopped
+                    }
                 }
             }
+            else {
+                if (ball.getX() <= SETTING_PADDING) {
+                    BALL_SPEED_X = -BALL_SPEED_X;
+                }
 
+                else if (ball.getX() + 2 * BALL_RADIUS >= SETTING_PADDING + APPLICATION_WIDTH) {
+                    BALL_SPEED_X = -BALL_SPEED_X;
+                }
+                else if (ball.getY() <= SETTING_PADDING) {
+                    BALL_SPEED_Y = -BALL_SPEED_Y;
+                }
+
+                else if (ball.getY() >= SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
+                    ball.setLocation(ball.getX(), SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);// just to check
+                    livesLeft --;
+                    GImage heartToRemove = hearts.get(livesLeft);
+                    for (int i = 0; i < 4; i++) {    // ball lost animation
+                        heartToRemove.setVisible(false);
+                        pause(100);
+                        heartToRemove.setVisible(true);
+                        pause(100);
+                    }
+                    remove(heartToRemove);
+                    for (int i = 0; i < 4; i++) {    // ball lost animation
+                        ball.setVisible(false);
+                        pause(100);
+                        ball.setVisible(true);
+                        pause(100);
+                    }
+                    remove(ball);
+                    if (livesLeft > 0) {
+                        gameBall(BALL_RADIUS);
+                        BALL_SPEED_Y = -BALL_GENERAL_SPEED;
+                        pause(3000);
+                    }
+                    else {
+                        isGameStarted = false;
+                    }
+                }
+            }
+            for (int i = particlesList.size()-1; i >= 0; i--) {
+                GOval particle = (GOval) particlesList.get(i);
+                double dx = particleSpeedsX.get(i);
+                double dy = particleSpeedsY.get(i);
+                particle.move(dx, dy);
+                particleSpeedsY.set(i, dy + 0.1);
+                if (particle.getY() > getHeight()*2.0/3.0) {
+                    remove(particle);
+                    particlesList.remove(i);
+                    particleSpeedsX.remove(i);
+                    particleSpeedsY.remove(i);
+                }
+
+            }
+
+        }
+    }
+
+    //animation for destroying bricks
+    private void createBrickParticles(GObject brick){
+        double x = brick.getX();
+        double y = brick.getY();
+        Color color = brick.getColor();
+        remove(brick);
+        for (int i = 0; i < 10; i++) {
+            double newX = x + (Math.random() - 0.5) * 10;
+            double newY = y + (Math.random() - 0.5) * 10;
+
+            GOval particle = new GOval(newX, newY, 5, 5);
+            particle.setColor(color);
+            particle.setFillColor(color);
+            particle.setFilled(true);
+            add(particle);
+
+            particleSpeedsX.add((Math.random() - 0.5)*4);
+            particleSpeedsY.add((Math.random() - 0.5)*4);
+            particlesList.add(particle);
         }
 
 
     }
 
     private Object checkBallSensors() {
-        //not finished, I wanna sleep
-        return null;
-    }
+        GObject obj;
+        double diam = 2 * BALL_RADIUS;
+        obj = getElementAt(ball.getX(), ball.getY());
+            if (obj != null) {
+                return obj;
+            }
+            obj = getElementAt(ball.getX() + diam, ball.getY());
+            if (obj != null) {
+                return obj;
+            }
+
+            obj = getElementAt(ball.getX(), ball.getY() + diam);
+            if (obj != null) {
+                return obj;
+            }
+
+            obj = getElementAt(ball.getX() + diam, ball.getY() + diam);
+            if (obj != null) {
+                return obj;
+            }
+
+            return null;
+        }
 
     /** ============== APP CONFIGURATION ============== */
     // main game
     private void configureApp() {
         removeAll();
+        particlesList.clear();
+        particleSpeedsX.clear();
+        particleSpeedsY.clear();
+        livesLeft = LIVES;
         isGameStarted = true;
         setBackground(settingsColor);
         setSize(APPLICATION_WIDTH+2*SETTING_PADDING, APPLICATION_HEIGHT+2*SETTING_PADDING);
         setSize(2*(APPLICATION_WIDTH+2*SETTING_PADDING)-getWidth(), 2*(APPLICATION_HEIGHT+2*SETTING_PADDING)-getHeight());
 
         // Gaming field
-        GRoundRect gamingField = new GRoundRect(SETTING_PADDING, SETTING_PADDING, APPLICATION_WIDTH, APPLICATION_HEIGHT);
+        gamingField = new GRoundRect(SETTING_PADDING, SETTING_PADDING, APPLICATION_WIDTH, APPLICATION_HEIGHT);
         gamingField.setFilled(true);
         gamingField.setColor(bgColor);
         gamingField.setFillColor(bgColor);
@@ -186,6 +291,17 @@ public class Breakout extends GraphicsProgram {
         add(gamePaddle, APPLICATION_WIDTH/2.0,APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT + SETTING_PADDING);
         gameBricks(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
         gameBall(BALL_RADIUS);
+
+        hearts.clear();
+        for (int i = 0; i<livesLeft; i++){
+            GImage heart = new GImage("heart.png");
+            heart.setSize(25, 25);
+            double x = 30 + (heart.getWidth() +10)* i;
+            double y = 0;
+            heart.setLocation(x, y);
+            hearts.add(heart);
+            add(heart);
+        }
     }
 
     // Ball for game
@@ -203,6 +319,7 @@ public class Breakout extends GraphicsProgram {
 
     //building bricks in the main game
     private void gameBricks(double bricksColumns, double bricksRows, double bricksWidth, double bricksHeight) {
+        bricksLeft = 0;
         for (int i = 0; i < bricksColumns; i++) {
             for (int j = 0; j < bricksRows; j++) {
 
@@ -226,6 +343,7 @@ public class Breakout extends GraphicsProgram {
                 roundRect.setFillColor(brickColor);
                 roundRect.setFilled(true);
                 add(roundRect);
+                bricksLeft++;
             }
         }
     }
