@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 00:24 | 17.11.2025
+ * Last update: 00:38 | 17.11.2025
  */
 
 import acm.graphics.*;
@@ -265,7 +265,7 @@ public class Breakout extends GraphicsProgram {
             double dy = particleSpeedsY.get(i);
             particle.move(dx, dy);
             particleSpeedsY.set(i, dy + 0.1);
-            if (particle.getY() > getHeight()) {
+            if (particle.getY() > APPLICATION_TOP_PADDING+APPLICATION_HEIGHT) {
                 remove(particle);
                 particlesList.remove(i);
                 particleSpeedsX.remove(i);
