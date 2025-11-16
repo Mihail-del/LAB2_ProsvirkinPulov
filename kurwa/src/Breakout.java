@@ -73,6 +73,9 @@ public class Breakout extends GraphicsProgram {
     private boolean StartMenuEnabled = false;
     private boolean waitingContinue = false;
     private boolean isGameStarted = false;
+    private boolean gameWon;
+    private boolean isEndScreenActive = false;
+    private boolean playAgainClicked = false;
 
     private ArrayList<GOval> particlesList = new ArrayList<GOval>();
     private ArrayList<Double> particleSpeedsX = new ArrayList<Double>();
@@ -102,6 +105,8 @@ public class Breakout extends GraphicsProgram {
     GSlider sliderBricksPadding;
     GLabel bricksPaddingValueLbl;
     GRect gamingField;
+    GImage playAgain;
+    GImage mainMenu;
 
     GSlider sliderBallSpeed;
     GLabel ballSpeedValueLbl;
@@ -132,12 +137,26 @@ public class Breakout extends GraphicsProgram {
     /** ============== RUN ============== */
     public void run() {
         addMouseListeners();
-        configureAppMenu();
-        waitForContinue();
-
-        configureApp();
-        pause(1000);
-        playGame();
+        while (true) {
+            configureAppMenu();
+            waitForContinue();
+            boolean keepPlaying = true;
+            while (keepPlaying) {
+                configureApp();
+                playGame();
+                playAgain();
+                isEndScreenActive = true;
+                while (isEndScreenActive) {
+                    pause(50);
+                }
+                if (playAgainClicked) {
+                    removeAll();
+                } else {
+                    keepPlaying = false;
+                    removeAll();
+                }
+            }
+        }
     }
     // play the main game
     private void playGame() {
@@ -150,7 +169,10 @@ public class Breakout extends GraphicsProgram {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
                 bricksLeft = bricksLeft - 1;
 
-                if (bricksLeft == 0) isGameStarted = false; // game stopped
+                if (bricksLeft == 0){
+                    isGameStarted = false; // game stopped
+                    gameWon = true;
+                }
             }
 
             if (ball.getX()+BALL_SPEED_X <= APPLICATION_PADDING) {
@@ -191,11 +213,41 @@ public class Breakout extends GraphicsProgram {
                 }
                 else {
                     isGameStarted = false;
+                    gameWon = false;
                 }
             }
 
             new Thread(() -> moveParticles()).start();
         }
+    }
+
+    private void playAgain() {
+        if (!gameWon) {
+        GImage lostGame = new GImage( "lostGame.png");
+        lostGame.setSize(400, 150);
+        double x = getWidth()/2.0-lostGame.getWidth()/2.0;
+        double y = getHeight()/2.5-lostGame.getHeight()/2.0;
+        lostGame.setLocation(x, y);
+        add(lostGame);}
+        else {
+            GImage wonGame = new GImage( "wonGame.png");
+            wonGame.setSize(400, 150);
+            double x = getWidth()/2.0-wonGame.getWidth()/2.0;
+            double y = getHeight()/2.5-wonGame.getHeight()/2.0;
+            wonGame.setLocation(x, y);
+            add(wonGame);
+        }
+
+        playAgain = new GImage("playAgain.png");
+        playAgain.setSize(240,70);
+        playAgain.setLocation(getWidth()/2.0 - playAgain.getWidth()/2.0, getHeight()/2.0 + playAgain.getHeight());
+        add(playAgain);
+
+        mainMenu = new GImage("mainMenu.png");
+        mainMenu.setSize(240,70);
+        mainMenu.setLocation(getWidth()/2.0 - mainMenu.getWidth()/2.0, playAgain.getY() + playAgain.getHeight() + 10);
+        add(mainMenu);
+
     }
 
     /** ===== CREATING PARTICLES ===== */
@@ -444,8 +496,19 @@ public class Breakout extends GraphicsProgram {
                     waitingContinue = false;
                 }
             }
+        } else if (isEndScreenActive) {
+            GObject obj = getElementAt(e.getX(), e.getY());
+            if (obj == playAgain) {
+                playAgainClicked = true;
+                isEndScreenActive = false;
+            }
+            else if (obj == mainMenu) {
+                playAgainClicked = false;
+                isEndScreenActive = false;
+
         }
     }
+        }
 
     /** ============== RELEASED MOUSE ACTIONS ============== */
     public void mouseReleased(MouseEvent e) {
