@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 20:14 | 16.11.2025
+ * Last update: 00:24 | 17.11.2025
  */
 
 import acm.graphics.*;
@@ -14,6 +14,7 @@ import acm.program.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Breakout extends GraphicsProgram {
     /** ============== CONSTANTS ============== */
@@ -79,8 +80,12 @@ public class Breakout extends GraphicsProgram {
     private ArrayList<Double> particleSpeedsY = new ArrayList<Double>();
     private ArrayList<GImage> hearts = new ArrayList<GImage>();
     private int actionSlider = 0;
+    private int score = 0;
     private int livesLeft;      //
     private int bricksLeft;
+
+    GRoundRect scoreFrame;
+    GLabel scoreLabel;
 
 
     GRect gameFramePreviewer;
@@ -156,6 +161,7 @@ public class Breakout extends GraphicsProgram {
             }
         }
     }
+
     // play the main game
     private void playGame() {
         while (isGameStarted){
@@ -164,6 +170,9 @@ public class Breakout extends GraphicsProgram {
             Object collider = checkBallSensors();
             if (collider != null) {
                 createBrickParticles((GObject) collider);
+                score++;
+                scoreLabel.setLabel(score+"");
+                scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
                 BALL_SPEED_Y = -BALL_SPEED_Y;
                 bricksLeft = bricksLeft - 1;
 
@@ -351,6 +360,7 @@ public class Breakout extends GraphicsProgram {
         particleSpeedsX.clear();
         particleSpeedsY.clear();
         livesLeft = LIVES;
+        score = 0;
         calcSpeedX();
         isGameStarted = true;
         setBackground(settingsColor);
@@ -388,6 +398,18 @@ public class Breakout extends GraphicsProgram {
             add(heart);
         }
 
+        // Score frame
+        scoreFrame = new GRoundRect(APPLICATION_PADDING+APPLICATION_WIDTH-heartFrame.getWidth(), APPLICATION_TOP_PADDING*0.1, heartFrame.getWidth(), APPLICATION_TOP_PADDING*0.8);
+        scoreFrame.setFilled(true);
+        scoreFrame.setColor(bgColor);
+        scoreFrame.setFillColor(bgColor);
+        add(scoreFrame);
+
+        scoreLabel = new GLabel(score + "");
+        scoreLabel.setFont("Monospaced-"+(int) Math.round(scoreFrame.getHeight()*0.6));
+        scoreLabel.setColor(fontColor);
+        scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
+        add(scoreLabel);
 
     }
 
@@ -455,6 +477,7 @@ public class Breakout extends GraphicsProgram {
         saveStartMenu();
     }
 
+    // calc random speedX
     private void calcSpeedX(){
         BALL_SPEED_X = (int) Math.round(Math.random()*2 +1);
         if ( Math.round(Math.random()*2) >= 1)
@@ -855,5 +878,6 @@ public class Breakout extends GraphicsProgram {
         playAgainClicked = false;
 
         actionSlider = 0;
+        score = 0;
     }
 }
