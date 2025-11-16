@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 01:36 | 16.11.2025
+ * Last update: 02:28 | 16.11.2025
  */
 
 import acm.graphics.*;
@@ -145,18 +145,11 @@ public class Breakout extends GraphicsProgram {
             pause(BALL_PAUSE);
             Object collider = checkBallSensors();
             if (collider != null) {
-                if (collider == gamePaddle)         {BALL_SPEED_Y = -BALL_SPEED_Y;}
-                else if (collider == gamingField)   {}            //ignore field
-                else if (particlesList.contains(collider)) {}   //ignore particles
-                else if (collider == hearts)        {}                 //ignore hearts
-                else { //bricks
-                    createBrickParticles((GObject) collider);
-                    BALL_SPEED_Y = -BALL_SPEED_Y;
-                    bricksLeft = bricksLeft - 1;
-                    if (bricksLeft == 0) {
-                        isGameStarted = false; // game stopped
-                    }
-                }
+                createBrickParticles((GObject) collider);
+                BALL_SPEED_Y = -BALL_SPEED_Y;
+                bricksLeft = bricksLeft - 1;
+
+                if (bricksLeft == 0) isGameStarted = false; // game stopped
             }
 
             if (ball.getX()+BALL_SPEED_X <= SETTING_PADDING) {
@@ -191,6 +184,7 @@ public class Breakout extends GraphicsProgram {
                 remove(ball);
                 if (livesLeft > 0) {
                     gameBall(BALL_RADIUS);
+                    calcSpeedX();
                     BALL_SPEED_Y = -BALL_GENERAL_SPEED;
                     pause(3000);
                 }
@@ -245,6 +239,7 @@ public class Breakout extends GraphicsProgram {
     }
 
     /** ===== CHECK BALL COLISIONS WITH OBJECTS ===== */
+
     // More accurate collision check without arrays
     private GObject checkBallSensors() {
         double x = ball.getX();
@@ -253,36 +248,47 @@ public class Breakout extends GraphicsProgram {
         double r = BALL_RADIUS;
 
         GObject obj;
+        boolean objectForAction;
 
-        obj = getElementAt(x, y);  // top-left corner
-        if (obj != null && obj != ball) return obj;
+        obj = getElementAt(x, y); // top-left corner
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
-        obj = getElementAt(x + d, y);  // top-right corner
-        if (obj != null && obj != ball) return obj;
+        obj = getElementAt(x + d, y); // top-right corner
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
         obj = getElementAt(x, y + d); // bottom-left corner
-        if (obj != null && obj != ball) return obj;
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
         obj = getElementAt(x + d, y + d); // bottom-right corner
-        if (obj != null && obj != ball) return obj;
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
         obj = getElementAt(x + r, y); // top-middle
-        if (obj != null && obj != ball) return obj;
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
         obj = getElementAt(x + r, y + d); // bottom-middle
-        if (obj != null && obj != ball) return obj;
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
-        obj = getElementAt(x, y + r);  // left-middle
-        if (obj != null && obj != ball) return obj;
+        obj = getElementAt(x, y + r); // left-middle
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
         obj = getElementAt(x + d, y + r); // right-middle
-        if (obj != null && obj != ball) return obj;
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
         obj = getElementAt(x + r, y + r); // center
-        if (obj != null && obj != ball) return obj;
+        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        if (objectForAction) return obj;
 
         return null;
     }
+
 
 
 
@@ -294,6 +300,7 @@ public class Breakout extends GraphicsProgram {
         particleSpeedsX.clear();
         particleSpeedsY.clear();
         livesLeft = LIVES;
+        calcSpeedX();
         isGameStarted = true;
         setBackground(settingsColor);
         setSize(APPLICATION_WIDTH+2*SETTING_PADDING, APPLICATION_HEIGHT+2*SETTING_PADDING);
@@ -316,7 +323,7 @@ public class Breakout extends GraphicsProgram {
         for (int i = 0; i<livesLeft; i++){
             GImage heart = new GImage("heart.png");
             heart.setSize(SETTING_PADDING*0.8, SETTING_PADDING*0.8);
-            double x = APPLICATION_WIDTH - (heart.getWidth() +10)* i;
+            double x = SETTING_PADDING*1.3 + (heart.getWidth() +SETTING_PADDING*0.3)* i;
             double y = SETTING_PADDING*0.1;
             heart.setLocation(x, y);
             hearts.add(heart);
@@ -386,6 +393,12 @@ public class Breakout extends GraphicsProgram {
 
         preview();
         saveStartMenu();
+    }
+
+    private void calcSpeedX(){
+        BALL_SPEED_X = (int) Math.round(Math.random()*2 +1);
+        if ( Math.round(Math.random()*2) >= 1)
+            BALL_SPEED_X = -BALL_SPEED_X;
     }
 
     /** ============== PRESSED MOUSE ACTIONS ============== */
@@ -524,7 +537,6 @@ public class Breakout extends GraphicsProgram {
                     sliderBallSpeed.sliderMove(e.getX(), 7);
                     int one_section = APPLICATION_WIDTH/9;
                     BALL_GENERAL_SPEED = (int) Math.round((e.getX() - SETTING_PADDING) / one_section + 1);
-                    BALL_SPEED_X = BALL_GENERAL_SPEED;
                     BALL_SPEED_Y = -BALL_GENERAL_SPEED;
                     if (BRICK_Y_OFFSET>10)  BRICK_Y_OFFSET=10;
                     ballSpeedValueLbl.setLabel(BALL_GENERAL_SPEED + "");
