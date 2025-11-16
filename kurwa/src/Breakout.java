@@ -66,9 +66,6 @@ public class Breakout extends GraphicsProgram {
     //  Offset of the top brick row from the top
     public static double BRICK_Y_OFFSET = (int) Math.round(BRICK_SEP);
 
-    //  Number of turns
-    public static int NTURNS = 3;
-
     /** ===== VARIABLES ====== */
     private boolean StartMenuEnabled = false;
     private boolean waitingContinue = false;
@@ -138,6 +135,7 @@ public class Breakout extends GraphicsProgram {
     public void run() {
         addMouseListeners();
         while (true) {
+            resetAllConsts();
             configureAppMenu();
             waitForContinue();
             boolean keepPlaying = true;
@@ -820,5 +818,33 @@ public class Breakout extends GraphicsProgram {
 
         bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
         add(bricksPreview, gameFramePreviewer.getX()+BRICK_SEP, gameFramePreviewer.getY()+BRICK_Y_OFFSET);
+    }
+
+    /** ===== RESET All CONSTANTS ===== */
+    private void resetAllConsts(){
+        PADDLE_WIDTH = 60;
+        PADDLE_HEIGHT = 10;
+        PADDLE_PADDING = 10;
+        NBRICKS_PER_ROW = 10;
+        NBRICK_ROWS = 5;
+        BRICK_SEP = 10;
+        BRICK_WIDTH = (APPLICATION_WIDTH - (NBRICKS_PER_ROW+1) * BRICK_SEP) / NBRICKS_PER_ROW;
+        BRICK_HEIGHT = 15;
+        BALL_RADIUS = 10;
+        BALL_GENERAL_SPEED = 3;
+        BALL_SPEED_X = BALL_GENERAL_SPEED; // X axis
+        BALL_SPEED_Y = -BALL_GENERAL_SPEED; // Y axis
+        BALL_PAUSE = 5;
+        LIVES = 3;
+        BRICK_Y_OFFSET = (int) Math.round(BRICK_SEP);
+
+        /* ===== VARIABLES ====== */
+        StartMenuEnabled = false;
+        waitingContinue = false;
+        isGameStarted = false;
+        isEndScreenActive = false;
+        playAgainClicked = false;
+
+        actionSlider = 0;
     }
 }
