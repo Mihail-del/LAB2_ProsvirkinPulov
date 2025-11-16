@@ -265,7 +265,7 @@ public class Breakout extends GraphicsProgram {
             double dy = particleSpeedsY.get(i);
             particle.move(dx, dy);
             particleSpeedsY.set(i, dy + 0.1);
-            if (particle.getY() > getHeight()*2.0/3.0) {
+            if (particle.getY() > getHeight()) {
                 remove(particle);
                 particlesList.remove(i);
                 particleSpeedsX.remove(i);
