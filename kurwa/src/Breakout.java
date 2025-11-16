@@ -370,16 +370,25 @@ public class Breakout extends GraphicsProgram {
         gameBricks(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
         gameBall(BALL_RADIUS);
 
+        // Heart frame
+        GRoundRect heartFrame = new GRoundRect(APPLICATION_PADDING, APPLICATION_TOP_PADDING*0.1, (APPLICATION_TOP_PADDING*0.6 + APPLICATION_PADDING *0.3)*3+APPLICATION_PADDING *0.3, APPLICATION_TOP_PADDING*0.8);
+        heartFrame.setFilled(true);
+        heartFrame.setColor(bgColor);
+        heartFrame.setFillColor(bgColor);
+        add(heartFrame);
+
         hearts.clear();
         for (int i = 0; i<livesLeft; i++){
             GImage heart = new GImage("heart.png");
-            heart.setSize(APPLICATION_TOP_PADDING *0.8, APPLICATION_TOP_PADDING *0.8);
+            heart.setSize(APPLICATION_TOP_PADDING *0.6, APPLICATION_TOP_PADDING *0.6);
             double x = APPLICATION_PADDING *1.3 + (heart.getWidth() + APPLICATION_PADDING *0.3)* i;
-            double y = APPLICATION_TOP_PADDING *0.1;
+            double y = APPLICATION_TOP_PADDING *0.2;
             heart.setLocation(x, y);
             hearts.add(heart);
             add(heart);
         }
+
+
     }
 
     // Ball for game
