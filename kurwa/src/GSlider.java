@@ -23,7 +23,7 @@ public class GSlider extends GCompound {
         this.body.setColor(Breakout.sliderColor);
         add(this.body);
 
-        this.ball = new GOval(- diameter/2.0 + start + Breakout.SETTING_PADDING, - diameter/2.0, diameter, diameter);
+        this.ball = new GOval(- diameter/2.0 + start + Breakout.APPLICATION_PADDING, - diameter/2.0, diameter, diameter);
         this.ball.setFilled(true);
         this.ball.setFillColor(Breakout.sliderBallColor);
         this.ball.setColor(Breakout.sliderBallColor);
@@ -32,6 +32,6 @@ public class GSlider extends GCompound {
 
 
     public void sliderMove(double x, double y) {
-        this.ball.setLocation(x-Breakout.SETTING_PADDING, -y);
+        this.ball.setLocation(x-Breakout.APPLICATION_PADDING, -y);
     }
 }

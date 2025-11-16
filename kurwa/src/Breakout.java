@@ -20,9 +20,10 @@ public class Breakout extends GraphicsProgram {
     //  Width and height of application window in pixels
     public static int APPLICATION_WIDTH = 500;
     public static int APPLICATION_HEIGHT = 700;
-    public static int SETTING_PADDING = 30;
-    private static int SETTING_WINDOW_WIDTH = 2*APPLICATION_WIDTH+ 3*SETTING_PADDING;
-    private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2*SETTING_PADDING;
+    public static int APPLICATION_PADDING = 30;
+    public static int APPLICATION_TOP_PADDING = 50;
+    private static int SETTING_WINDOW_WIDTH = 2*APPLICATION_WIDTH+ 3* APPLICATION_PADDING;
+    private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
     /** ============== CONSTANTS ============== */
 
@@ -152,20 +153,20 @@ public class Breakout extends GraphicsProgram {
                 if (bricksLeft == 0) isGameStarted = false; // game stopped
             }
 
-            if (ball.getX()+BALL_SPEED_X <= SETTING_PADDING) {
+            if (ball.getX()+BALL_SPEED_X <= APPLICATION_PADDING) {
                 BALL_SPEED_X = -BALL_SPEED_X;
             }
-            if (ball.getX() + 2 * BALL_RADIUS + BALL_SPEED_X>= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (ball.getX() + 2 * BALL_RADIUS + BALL_SPEED_X>= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 BALL_SPEED_X = -BALL_SPEED_X;
             }
-            if (ball.getY() +BALL_SPEED_Y <= SETTING_PADDING) {
+            if (ball.getY() +BALL_SPEED_Y <= APPLICATION_TOP_PADDING) {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
             if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0+BALL_RADIUS)  && (ball.getY() < gamePaddle.getY()-PADDLE_HEIGHT && ball.getY() >= gamePaddle.getY()-PADDLE_HEIGHT-BALL_GENERAL_SPEED)) {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
-            if (ball.getY() >= SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
-                ball.setLocation(ball.getX(), SETTING_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);// just to check
+            if (ball.getY() >= APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
+                ball.setLocation(ball.getX(), APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);// just to check
                 livesLeft --;
                 GImage heartToRemove = hearts.get(livesLeft);
                 for (int i = 0; i < 4; i++) {    // heart lost animation
@@ -303,11 +304,11 @@ public class Breakout extends GraphicsProgram {
         calcSpeedX();
         isGameStarted = true;
         setBackground(settingsColor);
-        setSize(APPLICATION_WIDTH+2*SETTING_PADDING, APPLICATION_HEIGHT+2*SETTING_PADDING);
-        setSize(2*(APPLICATION_WIDTH+2*SETTING_PADDING)-getWidth(), 2*(APPLICATION_HEIGHT+2*SETTING_PADDING)-getHeight());
+        setSize(APPLICATION_WIDTH+2* APPLICATION_PADDING, APPLICATION_HEIGHT+ APPLICATION_PADDING + APPLICATION_TOP_PADDING);
+        setSize(2*(APPLICATION_WIDTH+2* APPLICATION_PADDING)-getWidth(), 2*(APPLICATION_HEIGHT+APPLICATION_PADDING + APPLICATION_TOP_PADDING)-getHeight());
 
         // Gaming field
-        gamingField = new GRoundRect(SETTING_PADDING, SETTING_PADDING, APPLICATION_WIDTH, APPLICATION_HEIGHT);
+        gamingField = new GRoundRect(APPLICATION_PADDING, APPLICATION_TOP_PADDING, APPLICATION_WIDTH, APPLICATION_HEIGHT);
         gamingField.setFilled(true);
         gamingField.setColor(bgColor);
         gamingField.setFillColor(bgColor);
@@ -315,16 +316,16 @@ public class Breakout extends GraphicsProgram {
 
         // Paddle
         gamePaddle = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
-        add(gamePaddle, APPLICATION_WIDTH/2.0,APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT + SETTING_PADDING);
+        add(gamePaddle, APPLICATION_WIDTH/2.0,APPLICATION_HEIGHT - PADDLE_PADDING - PADDLE_HEIGHT + APPLICATION_TOP_PADDING);
         gameBricks(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
         gameBall(BALL_RADIUS);
 
         hearts.clear();
         for (int i = 0; i<livesLeft; i++){
             GImage heart = new GImage("heart.png");
-            heart.setSize(SETTING_PADDING*0.8, SETTING_PADDING*0.8);
-            double x = SETTING_PADDING*1.3 + (heart.getWidth() +SETTING_PADDING*0.3)* i;
-            double y = SETTING_PADDING*0.1;
+            heart.setSize(APPLICATION_TOP_PADDING *0.8, APPLICATION_TOP_PADDING *0.8);
+            double x = APPLICATION_PADDING *1.3 + (heart.getWidth() + APPLICATION_PADDING *0.3)* i;
+            double y = APPLICATION_TOP_PADDING *0.1;
             heart.setLocation(x, y);
             hearts.add(heart);
             add(heart);
@@ -333,8 +334,8 @@ public class Breakout extends GraphicsProgram {
 
     // Ball for game
     private void gameBall(int ballRadius) {
-        double x = (APPLICATION_WIDTH+SETTING_PADDING) / 2.0 - BALL_RADIUS;
-        double y = APPLICATION_HEIGHT + SETTING_PADDING - PADDLE_PADDING - PADDLE_HEIGHT/2.0 - (4 * BALL_RADIUS);
+        double x = (APPLICATION_WIDTH+ APPLICATION_PADDING) / 2.0 - BALL_RADIUS;
+        double y = APPLICATION_HEIGHT + APPLICATION_TOP_PADDING - PADDLE_PADDING - PADDLE_HEIGHT/2.0 - (4 * BALL_RADIUS);
         ball = new GOval(x, y, 2 * BALL_RADIUS, 2 * BALL_RADIUS);
 
         ball.setFilled(true);
@@ -350,8 +351,8 @@ public class Breakout extends GraphicsProgram {
         for (int i = 0; i < bricksColumns; i++) {
             for (int j = 0; j < bricksRows; j++) {
 
-                double x = BRICK_SEP + SETTING_PADDING + i * (bricksWidth + BRICK_SEP);
-                double y = BRICK_Y_OFFSET + SETTING_PADDING + j * (bricksHeight + BRICK_SEP);
+                double x = BRICK_SEP + APPLICATION_PADDING + i * (bricksWidth + BRICK_SEP);
+                double y = BRICK_Y_OFFSET + APPLICATION_TOP_PADDING + j * (bricksHeight + BRICK_SEP);
 
                 GRoundRect roundRect = new GRoundRect(x, y, bricksWidth, bricksHeight);
                 Color brickColor;
@@ -404,7 +405,7 @@ public class Breakout extends GraphicsProgram {
     /** ============== PRESSED MOUSE ACTIONS ============== */
     public void mousePressed(MouseEvent e) {
         if(StartMenuEnabled) {
-            if (e.getX() >= SETTING_PADDING - 10 && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH + 10) {
+            if (e.getX() >= APPLICATION_PADDING - 10 && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH + 10) {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.22 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.22 + 20) {
                     actionSlider = 1;
                     System.out.println(1);
@@ -436,8 +437,8 @@ public class Breakout extends GraphicsProgram {
                 }
             }
 
-            if (e.getX() >= SETTING_PADDING+APPLICATION_WIDTH*0.25 && e.getX() <= SETTING_PADDING+APPLICATION_WIDTH*0.75){
-                if (e.getY() >= SETTING_WINDOW_HEIGHT*0.92-SETTING_PADDING && e.getY() <= SETTING_WINDOW_HEIGHT-SETTING_PADDING) {
+            if (e.getX() >= APPLICATION_PADDING +APPLICATION_WIDTH*0.25 && e.getX() <= APPLICATION_PADDING +APPLICATION_WIDTH*0.75){
+                if (e.getY() >= SETTING_WINDOW_HEIGHT*0.92- APPLICATION_PADDING && e.getY() <= SETTING_WINDOW_HEIGHT- APPLICATION_PADDING) {
                     System.out.println("save");
                     StartMenuEnabled  = false;
                     waitingContinue = false;
@@ -458,12 +459,12 @@ public class Breakout extends GraphicsProgram {
     public void mouseDragged(MouseEvent e) {
         if(StartMenuEnabled) {
             // PADDLE WIDTH
-            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 1) {
                     sliderPaddleWidth.sliderMove(e.getX(), 7);
-                    PADDLE_WIDTH = (e.getX() - SETTING_PADDING) / 2 + 10;
+                    PADDLE_WIDTH = (e.getX() - APPLICATION_PADDING) / 2 + 10;
                     paddleWidthValueLbl.setLabel(PADDLE_WIDTH + "");
-                    paddleWidthValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.2);
+                    paddleWidthValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.2);
 
                     remove(paddlePreview);
                     paddlePreview = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
@@ -472,12 +473,12 @@ public class Breakout extends GraphicsProgram {
             }
 
             // PADDLE PADDING
-            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 2) {
                     sliderPaddlePadding.sliderMove(e.getX(), 7);
-                    PADDLE_PADDING = (e.getX() - SETTING_PADDING) / 20 + 10;
+                    PADDLE_PADDING = (e.getX() - APPLICATION_PADDING) / 20 + 10;
                     paddlePaddingValueLbl.setLabel(PADDLE_PADDING + "");
-                    paddlePaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - paddlePaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.3);
+                    paddlePaddingValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - paddlePaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.3);
 
                     remove(paddlePreview);
                     paddlePreview = new GPaddle(PADDLE_WIDTH, PADDLE_HEIGHT);
@@ -486,14 +487,14 @@ public class Breakout extends GraphicsProgram {
             }
 
             // BRICKS COLUMNS NUMBER
-            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 3) {
                     sliderBricksColumns.sliderMove(e.getX(), 7);
                     int one_section = APPLICATION_WIDTH/19;
-                    NBRICKS_PER_ROW = (e.getX() - SETTING_PADDING) / one_section+1;
+                    NBRICKS_PER_ROW = (e.getX() - APPLICATION_PADDING) / one_section+1;
                     BRICK_WIDTH = (APPLICATION_WIDTH - (NBRICKS_PER_ROW+1) * BRICK_SEP) / NBRICKS_PER_ROW;
                     bricksColumnsValueLbl.setLabel(NBRICKS_PER_ROW + "");
-                    bricksColumnsValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksColumnsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.45);
+                    bricksColumnsValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - bricksColumnsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.45);
 
                     remove(bricksPreview);
                     bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
@@ -501,14 +502,14 @@ public class Breakout extends GraphicsProgram {
             }
 
             // BRICKS ROWS NUMBER
-            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 4) {
                     sliderBricksRows.sliderMove(e.getX(), 7);
                     int one_section = APPLICATION_WIDTH/9;
-                    NBRICK_ROWS = (e.getX() - SETTING_PADDING) / one_section+1;
+                    NBRICK_ROWS = (e.getX() - APPLICATION_PADDING) / one_section+1;
                     if (NBRICK_ROWS>10)  NBRICK_ROWS=10;
                     bricksRowsValueLbl.setLabel(NBRICK_ROWS + "");
-                    bricksRowsValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksRowsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.55);
+                    bricksRowsValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - bricksRowsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.55);
 
                     remove(bricksPreview);
                     bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
@@ -516,14 +517,14 @@ public class Breakout extends GraphicsProgram {
             }
 
             // BRICKS TOP PADDING NUMBER
-            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 5) {
                     sliderBricksPadding.sliderMove(e.getX(), 7);
                     int one_section = APPLICATION_WIDTH/70;
-                    BRICK_Y_OFFSET = (e.getX() - SETTING_PADDING) / one_section + BRICK_SEP;
+                    BRICK_Y_OFFSET = (e.getX() - APPLICATION_PADDING) / one_section + BRICK_SEP;
                     if (BRICK_Y_OFFSET>70)  BRICK_Y_OFFSET=70;
                     bricksPaddingValueLbl.setLabel((int) Math.round(BRICK_Y_OFFSET) + "");
-                    bricksPaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
+                    bricksPaddingValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
 
                     remove(bricksPreview);
                     bricksPreview = new GBricksPreview(NBRICKS_PER_ROW, NBRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT);
@@ -532,15 +533,15 @@ public class Breakout extends GraphicsProgram {
             }
 
             // BALL SPEED
-            if (e.getX() >= SETTING_PADDING && e.getX() <= SETTING_PADDING + APPLICATION_WIDTH) {
+            if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 6) {
                     sliderBallSpeed.sliderMove(e.getX(), 7);
                     int one_section = APPLICATION_WIDTH/9;
-                    BALL_GENERAL_SPEED = (int) Math.round((e.getX() - SETTING_PADDING) / one_section + 1);
+                    BALL_GENERAL_SPEED = (int) Math.round((e.getX() - APPLICATION_PADDING) / one_section + 1);
                     BALL_SPEED_Y = -BALL_GENERAL_SPEED;
                     if (BRICK_Y_OFFSET>10)  BRICK_Y_OFFSET=10;
                     ballSpeedValueLbl.setLabel(BALL_GENERAL_SPEED + "");
-                    ballSpeedValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - ballSpeedValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.80);
+                    ballSpeedValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - ballSpeedValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.80);
                 }
             }
         }
@@ -553,11 +554,11 @@ public class Breakout extends GraphicsProgram {
             double newX = e.getX();
             double currentY = gamePaddle.getY();
 
-            if (newX < SETTING_PADDING + gamePaddle.getWidth()/2){
-                newX= SETTING_PADDING + gamePaddle.getWidth()/2;
+            if (newX < APPLICATION_PADDING + gamePaddle.getWidth()/2){
+                newX= APPLICATION_PADDING + gamePaddle.getWidth()/2;
             }
-            if (newX > APPLICATION_WIDTH+SETTING_PADDING - gamePaddle.getWidth()/2) {
-                newX = APPLICATION_WIDTH+SETTING_PADDING - gamePaddle.getWidth()/2;
+            if (newX > APPLICATION_WIDTH+ APPLICATION_PADDING - gamePaddle.getWidth()/2) {
+                newX = APPLICATION_WIDTH+ APPLICATION_PADDING - gamePaddle.getWidth()/2;
             }
 
             gamePaddle.setLocation(newX, currentY);
@@ -595,17 +596,17 @@ public class Breakout extends GraphicsProgram {
 
     /* ===== MAKET FRAMES ===== */
     private void maketDraw(){
-        GRoundRect sectionOne = new GRoundRect(SETTING_PADDING*0.6, SETTING_WINDOW_HEIGHT*0.15, APPLICATION_WIDTH+SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
+        GRoundRect sectionOne = new GRoundRect(APPLICATION_PADDING *0.6, SETTING_WINDOW_HEIGHT*0.15, APPLICATION_WIDTH+ APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.2);
         sectionOne.setFilled(true);
         sectionOne.setFillColor(bgColor);
         add(sectionOne);
 
-        GRoundRect sectionTwo = new GRoundRect(SETTING_PADDING*0.6, SETTING_WINDOW_HEIGHT*0.4, APPLICATION_WIDTH+SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.3);
+        GRoundRect sectionTwo = new GRoundRect(APPLICATION_PADDING *0.6, SETTING_WINDOW_HEIGHT*0.4, APPLICATION_WIDTH+ APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.3);
         sectionTwo.setFilled(true);
         sectionTwo.setFillColor(bgColor);
         add(sectionTwo);
 
-        GRoundRect sectionThree = new GRoundRect(SETTING_PADDING*0.6, SETTING_WINDOW_HEIGHT*0.75, APPLICATION_WIDTH+SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.1);
+        GRoundRect sectionThree = new GRoundRect(APPLICATION_PADDING *0.6, SETTING_WINDOW_HEIGHT*0.75, APPLICATION_WIDTH+ APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.1);
         sectionThree.setFilled(true);
         sectionThree.setFillColor(bgColor);
         add(sectionThree);
@@ -617,34 +618,34 @@ public class Breakout extends GraphicsProgram {
         GLabel paddleWidthLbl = new GLabel("Paddle width");
         paddleWidthLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddleWidthLbl.setColor(Breakout.fontColor);
-        paddleWidthLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.2);
+        paddleWidthLbl.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.2);
         add(paddleWidthLbl);
 
         paddleWidthValueLbl = new GLabel(PADDLE_WIDTH+"");
         paddleWidthValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddleWidthValueLbl.setColor(Breakout.fontColor);
-        paddleWidthValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
+        paddleWidthValueLbl.setLocation(APPLICATION_PADDING +APPLICATION_WIDTH-paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.2);
         add(paddleWidthValueLbl);
 
         sliderPaddleWidth = new GSlider(APPLICATION_WIDTH, 3, 14, PADDLE_WIDTH);
-        sliderPaddleWidth.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.22);
+        sliderPaddleWidth.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.22);
         add(sliderPaddleWidth);
 
         // BOTTOM PADDING
         GLabel paddlePaddingLbl = new GLabel("Paddle bottom padding");
         paddlePaddingLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddlePaddingLbl.setColor(Breakout.fontColor);
-        paddlePaddingLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.3);
+        paddlePaddingLbl.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.3);
         add(paddlePaddingLbl);
 
         paddlePaddingValueLbl = new GLabel(PADDLE_PADDING+"");
         paddlePaddingValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         paddlePaddingValueLbl.setColor(Breakout.fontColor);
-        paddlePaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - paddlePaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.3);
+        paddlePaddingValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - paddlePaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.3);
         add(paddlePaddingValueLbl);
 
         sliderPaddlePadding = new GSlider(APPLICATION_WIDTH, 3, 14, PADDLE_PADDING);
-        sliderPaddlePadding.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.32);
+        sliderPaddlePadding.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.32);
         add(sliderPaddlePadding);
     }
 
@@ -653,17 +654,17 @@ public class Breakout extends GraphicsProgram {
         GLabel brickColumnsLbl = new GLabel("Columns number");
         brickColumnsLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         brickColumnsLbl.setColor(Breakout.fontColor);
-        brickColumnsLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.45);
+        brickColumnsLbl.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.45);
         add(brickColumnsLbl);
 
         bricksColumnsValueLbl = new GLabel(NBRICKS_PER_ROW+"");
         bricksColumnsValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         bricksColumnsValueLbl.setColor(Breakout.fontColor);
-        bricksColumnsValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-bricksColumnsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.45);
+        bricksColumnsValueLbl.setLocation(APPLICATION_PADDING +APPLICATION_WIDTH-bricksColumnsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.45);
         add(bricksColumnsValueLbl);
 
-        sliderBricksColumns = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.5-SETTING_PADDING);
-        sliderBricksColumns.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.47);
+        sliderBricksColumns = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.5- APPLICATION_PADDING);
+        sliderBricksColumns.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.47);
         add(sliderBricksColumns);
     }
 
@@ -672,17 +673,17 @@ public class Breakout extends GraphicsProgram {
         GLabel brickRowsLbl = new GLabel("Rows number");
         brickRowsLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         brickRowsLbl.setColor(Breakout.fontColor);
-        brickRowsLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.55);
+        brickRowsLbl.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.55);
         add(brickRowsLbl);
 
         bricksRowsValueLbl = new GLabel(NBRICK_ROWS+"");
         bricksRowsValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         bricksRowsValueLbl.setColor(Breakout.fontColor);
-        bricksRowsValueLbl.setLocation(SETTING_PADDING+APPLICATION_WIDTH-bricksRowsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.55);
+        bricksRowsValueLbl.setLocation(APPLICATION_PADDING +APPLICATION_WIDTH-bricksRowsValueLbl.getWidth(), SETTING_WINDOW_HEIGHT*0.55);
         add(bricksRowsValueLbl);
 
-        sliderBricksRows = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.5-SETTING_PADDING);
-        sliderBricksRows.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.57);
+        sliderBricksRows = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.5- APPLICATION_PADDING);
+        sliderBricksRows.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.57);
         add(sliderBricksRows);
     }
 
@@ -691,17 +692,17 @@ public class Breakout extends GraphicsProgram {
         GLabel brickPaddingLbl = new GLabel("Bricks top padding");
         brickPaddingLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         brickPaddingLbl.setColor(Breakout.fontColor);
-        brickPaddingLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.65);
+        brickPaddingLbl.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.65);
         add(brickPaddingLbl);
 
         bricksPaddingValueLbl = new GLabel((int) Math.round(BRICK_Y_OFFSET)+"");
         bricksPaddingValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         bricksPaddingValueLbl.setColor(Breakout.fontColor);
-        bricksPaddingValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
+        bricksPaddingValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - bricksPaddingValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.65);
         add(bricksPaddingValueLbl);
 
-        sliderBricksPadding = new GSlider(APPLICATION_WIDTH, 3, 14, -SETTING_PADDING+7);
-        sliderBricksPadding.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.67);
+        sliderBricksPadding = new GSlider(APPLICATION_WIDTH, 3, 14, -APPLICATION_PADDING +7);
+        sliderBricksPadding.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.67);
         add(sliderBricksPadding);
     }
 
@@ -710,17 +711,17 @@ public class Breakout extends GraphicsProgram {
         GLabel ballSpeedLbl = new GLabel("Ball speed");
         ballSpeedLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         ballSpeedLbl.setColor(Breakout.fontColor);
-        ballSpeedLbl.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.8);
+        ballSpeedLbl.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.8);
         add(ballSpeedLbl);
 
         ballSpeedValueLbl = new GLabel((int) Math.round(BALL_GENERAL_SPEED)+"");
         ballSpeedValueLbl.setFont("Monospaced-"+(int) Math.round(APPLICATION_WIDTH*0.05));
         ballSpeedValueLbl.setColor(Breakout.fontColor);
-        ballSpeedValueLbl.setLocation(SETTING_PADDING + APPLICATION_WIDTH - ballSpeedValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.8);
+        ballSpeedValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - ballSpeedValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.8);
         add(ballSpeedValueLbl);
 
-        sliderBallSpeed = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.3-SETTING_PADDING);
-        sliderBallSpeed.setLocation(SETTING_PADDING, SETTING_WINDOW_HEIGHT*0.82);
+        sliderBallSpeed = new GSlider(APPLICATION_WIDTH, 3, 14, APPLICATION_WIDTH*0.3- APPLICATION_PADDING);
+        sliderBallSpeed.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT*0.82);
         add(sliderBallSpeed);
     }
 
@@ -731,7 +732,7 @@ public class Breakout extends GraphicsProgram {
 
     /* ===== SAVE BUTTON ===== */
     private void saveStartMenu(){
-        GRect savebtn = new GRect(SETTING_PADDING+APPLICATION_WIDTH*0.25, SETTING_WINDOW_HEIGHT*0.92-SETTING_PADDING, APPLICATION_WIDTH*0.5, SETTING_WINDOW_HEIGHT*0.08);
+        GRect savebtn = new GRect(APPLICATION_PADDING +APPLICATION_WIDTH*0.25, SETTING_WINDOW_HEIGHT*0.92- APPLICATION_PADDING, APPLICATION_WIDTH*0.5, SETTING_WINDOW_HEIGHT*0.08);
         savebtn.setFilled(true);
         savebtn.setFillColor(sliderBallColor);
         savebtn.setColor(sliderBallColor);
@@ -746,7 +747,7 @@ public class Breakout extends GraphicsProgram {
 
     /* ===== PREVIEW ===== */
     private void preview(){
-        gameFramePreviewer = new GRoundRect(APPLICATION_WIDTH + 2*SETTING_PADDING, SETTING_PADDING, Breakout.APPLICATION_WIDTH, Breakout.APPLICATION_HEIGHT);
+        gameFramePreviewer = new GRoundRect(APPLICATION_WIDTH + 2* APPLICATION_PADDING, APPLICATION_PADDING, APPLICATION_WIDTH, APPLICATION_HEIGHT);
         gameFramePreviewer.setFilled(true);
         gameFramePreviewer.setFillColor(Breakout.bgColor);
         add(gameFramePreviewer);
