@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class Breakout extends GraphicsProgram {
-    /** ============== CONSTANTS ============== */
+    /** ============== CONSTANTS SIZES ============== */
     //  Width and height of application window in pixels
     public static int APPLICATION_WIDTH = 500;
     public static int APPLICATION_HEIGHT = 700;
@@ -25,8 +25,10 @@ public class Breakout extends GraphicsProgram {
     private static int SETTING_WINDOW_WIDTH = 2*APPLICATION_WIDTH+ 3* APPLICATION_PADDING;
     private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
-    /** ============== CONSTANTS ============== */
+    // Game mode
+    private static boolean autoPlay = true;
 
+    /** ============== CONSTANTS ============== */
     //  Dimensions of the paddle
     public static int PADDLE_WIDTH = 60;
     public static int PADDLE_HEIGHT = 10;
@@ -168,6 +170,8 @@ public class Breakout extends GraphicsProgram {
     private void playGame() {
         while (isGameStarted){
             ball.move(BALL_SPEED_X, BALL_SPEED_Y);
+            if (autoPlay)
+                gamePaddle.setLocation(ball.getX(), gamePaddle.getY());
             pause(BALL_PAUSE);
             Object collider = checkBallSensors();
             if (collider != null) {
@@ -673,7 +677,7 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== MOVING MOUSE ACTIONS WITH PADDLE ============== */
     public void mouseMoved(MouseEvent e){
-        if (isGameStarted){
+        if (isGameStarted && !autoPlay){
             double newX = e.getX();
             double currentY = gamePaddle.getY();
 
