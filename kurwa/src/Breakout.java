@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 00:38 | 17.11.2025
+ * Last update: 14:21 | 17.11.2025
  */
 
 import acm.graphics.*;
@@ -14,7 +14,6 @@ import acm.program.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class Breakout extends GraphicsProgram {
     /** ============== CONSTANTS ============== */
@@ -138,6 +137,7 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== RUN ============== */
     public void run() {
+        configureLoadingApp();
         addMouseListeners();
         while (true) {
             resetAllConsts();
@@ -353,7 +353,47 @@ public class Breakout extends GraphicsProgram {
 
 
     /** ============== APP CONFIGURATION ============== */
-    // main game
+    // ===== loading menu =====
+    private void configureLoadingApp(){
+        GImage imageLoading = new GImage("images/loadingScreen.png");
+        imageLoading.setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
+        imageLoading.setLocation(0,0);
+        add(imageLoading);
+        setSize((int) Math.round(imageLoading.getWidth()), (int) Math.round(imageLoading.getHeight()));
+
+        pause(2000);
+        fadding(0f, true);
+    }
+
+    // covering with a apearing block
+    private void fadding(float alpha, boolean fade){
+        GRect closeRect = new GRect(0,0,getWidth(),getHeight());
+        closeRect.setFilled(true);
+        Color blockColorZero = new Color(settingsColor.getRed(),  settingsColor.getGreen(), settingsColor.getBlue(), (int)(alpha * 255));
+        closeRect.setFillColor(blockColorZero);
+        closeRect.setColor(blockColorZero);
+        add(closeRect);
+        if (fade) {
+            while (alpha < 1f) {
+                alpha += 0.01f;
+                if (alpha > 1f) alpha = 1f;
+                Color blockColor = new Color(settingsColor.getRed(), settingsColor.getGreen(), settingsColor.getBlue(), (int) (alpha * 255));
+                closeRect.setFillColor(blockColor);
+                pause(20);
+            }
+        } else {
+            while (alpha > 0f) {
+                alpha -= 0.01f;
+                if (alpha < 0f) alpha = 0f;
+                Color blockColor = new Color(settingsColor.getRed(), settingsColor.getGreen(), settingsColor.getBlue(), (int) (alpha * 255));
+                closeRect.setFillColor(blockColor);
+                pause(20);
+            }
+        }
+        pause(100);
+    }
+
+    // ===== main game =====
     private void configureApp() {
         removeAll();
         particlesList.clear();
@@ -458,8 +498,9 @@ public class Breakout extends GraphicsProgram {
     }
 
 
-    // start menu
+    // ===== start menu =====
     private void configureAppMenu() {
+        fadding(1f, false);
         removeAll();
         setBackground(settingsColor);
         setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
