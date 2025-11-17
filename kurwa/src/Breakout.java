@@ -26,7 +26,7 @@ public class Breakout extends GraphicsProgram {
     private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
     // Game mode
-    private static boolean autoPlay = true;
+    private static final boolean autoPlay = false;
 
     /** ============== CONSTANTS ============== */
     //  Dimensions of the paddle
