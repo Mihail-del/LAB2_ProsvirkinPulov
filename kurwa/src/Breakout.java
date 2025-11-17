@@ -139,7 +139,7 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== RUN ============== */
     public void run() {
-        //configureLoadingApp();
+        configureLoadingApp();
         addMouseListeners();
         while (true) {
             resetAllConsts();
