@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 14:21 | 17.11.2025
+ * Last update: 15:15 | 17.11.2025
  */
 
 import acm.graphics.*;
@@ -21,7 +21,7 @@ public class Breakout extends GraphicsProgram {
     public static int APPLICATION_WIDTH = 500;
     public static int APPLICATION_HEIGHT = 700;
     public static int APPLICATION_PADDING = 30;
-    public static int APPLICATION_TOP_PADDING = 50;
+    public static int APPLICATION_TOP_PADDING = 60;
     private static int SETTING_WINDOW_WIDTH = 2*APPLICATION_WIDTH+ 3* APPLICATION_PADDING;
     private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
@@ -143,9 +143,11 @@ public class Breakout extends GraphicsProgram {
             resetAllConsts();
             configureAppMenu();
             waitForContinue();
+            fading(0f, true, 5, 100);
             boolean keepPlaying = true;
             while (keepPlaying) {
                 configureApp();
+                pause(1000);
                 playGame();
                 playAgain();
                 isEndScreenActive = true;
@@ -308,45 +310,39 @@ public class Breakout extends GraphicsProgram {
         double r = BALL_RADIUS;
 
         GObject obj;
-        boolean objectForAction;
 
         obj = getElementAt(x, y); // top-left corner
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x + d, y); // top-right corner
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x, y + d); // bottom-left corner
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x + d, y + d); // bottom-right corner
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x + r, y); // top-middle
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x + r, y + d); // bottom-middle
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x, y + r); // left-middle
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x + d, y + r); // right-middle
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         obj = getElementAt(x + r, y + r); // center
-        objectForAction = obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
-        if (objectForAction) return obj;
+        if (objectForAction(obj)) return obj;
 
         return null;
+    }
+
+    private boolean objectForAction(GObject obj){
+        return obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
     }
 
 
@@ -362,14 +358,14 @@ public class Breakout extends GraphicsProgram {
         setSize((int) Math.round(imageLoading.getWidth()), (int) Math.round(imageLoading.getHeight()));
 
         pause(2000);
-        fadding(0f, true);
+        fading(0f, true, 20, 50);
     }
 
     // covering with a apearing block
-    private void fadding(float alpha, boolean fade){
+    private void fading(float alpha, boolean fade, int delay, int lastDelay){
         GRect closeRect = new GRect(0,0,getWidth(),getHeight());
         closeRect.setFilled(true);
-        Color blockColorZero = new Color(settingsColor.getRed(),  settingsColor.getGreen(), settingsColor.getBlue(), (int)(alpha * 255));
+        Color blockColorZero = new Color(bgColor.getRed(),  bgColor.getGreen(), bgColor.getBlue(), (int)(alpha * 255));
         closeRect.setFillColor(blockColorZero);
         closeRect.setColor(blockColorZero);
         add(closeRect);
@@ -377,20 +373,21 @@ public class Breakout extends GraphicsProgram {
             while (alpha < 1f) {
                 alpha += 0.01f;
                 if (alpha > 1f) alpha = 1f;
-                Color blockColor = new Color(settingsColor.getRed(), settingsColor.getGreen(), settingsColor.getBlue(), (int) (alpha * 255));
+                Color blockColor = new Color(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), (int) (alpha * 255));
                 closeRect.setFillColor(blockColor);
-                pause(20);
+                pause(delay);
             }
         } else {
             while (alpha > 0f) {
                 alpha -= 0.01f;
                 if (alpha < 0f) alpha = 0f;
-                Color blockColor = new Color(settingsColor.getRed(), settingsColor.getGreen(), settingsColor.getBlue(), (int) (alpha * 255));
+                Color blockColor = new Color(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), (int) (alpha * 255));
                 closeRect.setFillColor(blockColor);
-                pause(20);
+                pause(delay);
             }
         }
-        pause(100);
+        remove(closeRect);
+        pause(lastDelay);
     }
 
     // ===== main game =====
@@ -450,7 +447,6 @@ public class Breakout extends GraphicsProgram {
         scoreLabel.setColor(fontColor);
         scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
         add(scoreLabel);
-
     }
 
     // Ball for game
@@ -500,7 +496,6 @@ public class Breakout extends GraphicsProgram {
 
     // ===== start menu =====
     private void configureAppMenu() {
-        fadding(1f, false);
         removeAll();
         setBackground(settingsColor);
         setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
@@ -516,6 +511,8 @@ public class Breakout extends GraphicsProgram {
 
         preview();
         saveStartMenu();
+
+        //fading(1f, false, 10, 10);
     }
 
     // calc random speedX
@@ -531,38 +528,31 @@ public class Breakout extends GraphicsProgram {
             if (e.getX() >= APPLICATION_PADDING - 10 && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH + 10) {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.22 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.22 + 20) {
                     actionSlider = 1;
-                    System.out.println(1);
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.32 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.32 + 20) {
                     actionSlider = 2;
-                    System.out.println(2);
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.47 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.47 + 20) {
                     actionSlider = 3;
-                    System.out.println(3);
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.57 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.57 + 20) {
                     actionSlider = 4;
-                    System.out.println(4);
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.67 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.67 + 20) {
                     actionSlider = 5;
-                    System.out.println(5);
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.82 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.82 + 20) {
                     actionSlider = 6;
-                    System.out.println(6);
                 }
             }
 
             if (e.getX() >= APPLICATION_PADDING +APPLICATION_WIDTH*0.25 && e.getX() <= APPLICATION_PADDING +APPLICATION_WIDTH*0.75){
                 if (e.getY() >= SETTING_WINDOW_HEIGHT*0.92- APPLICATION_PADDING && e.getY() <= SETTING_WINDOW_HEIGHT- APPLICATION_PADDING) {
-                    System.out.println("save");
                     StartMenuEnabled  = false;
                     waitingContinue = false;
                 }
@@ -585,7 +575,6 @@ public class Breakout extends GraphicsProgram {
     public void mouseReleased(MouseEvent e) {
         if(StartMenuEnabled) {
             actionSlider = 0;
-            System.out.println(0);
         }
     }
 
@@ -596,7 +585,7 @@ public class Breakout extends GraphicsProgram {
             if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 1) {
                     sliderPaddleWidth.sliderMove(e.getX(), 7);
-                    PADDLE_WIDTH = (e.getX() - APPLICATION_PADDING) / 2 + 10;
+                    PADDLE_WIDTH = (e.getX() - APPLICATION_PADDING) / 2 + 20;
                     paddleWidthValueLbl.setLabel(PADDLE_WIDTH + "");
                     paddleWidthValueLbl.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH - paddleWidthValueLbl.getWidth(), SETTING_WINDOW_HEIGHT * 0.2);
 
