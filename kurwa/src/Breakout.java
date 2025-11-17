@@ -245,6 +245,7 @@ public class Breakout extends GraphicsProgram {
         }
     }
 
+    // showing end screen
     private void playAgain() {
         if (!gameWon) {
         GImage lostGame = new GImage( "images/lostGame.png");
@@ -356,6 +357,7 @@ public class Breakout extends GraphicsProgram {
         return null;
     }
 
+    // checks if this ia a brick
     private boolean objectForAction(GObject obj){
         return obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
     }
@@ -376,7 +378,7 @@ public class Breakout extends GraphicsProgram {
         fading(0f, true, 20, 50);
     }
 
-    // covering with a apearing block
+    // covering with a appearing block
     private void fading(float alpha, boolean fade, int delay, int lastDelay){
         GRect closeRect = new GRect(0,0,getWidth(),getHeight());
         closeRect.setFilled(true);
@@ -392,6 +394,8 @@ public class Breakout extends GraphicsProgram {
                 closeRect.setFillColor(blockColor);
                 pause(delay);
             }
+            removeAll();
+            remove(closeRect);
         } else {
             while (alpha > 0f) {
                 alpha -= 0.01f;
@@ -400,8 +404,8 @@ public class Breakout extends GraphicsProgram {
                 closeRect.setFillColor(blockColor);
                 pause(delay);
             }
+            remove(closeRect);
         }
-        remove(closeRect);
         pause(lastDelay);
     }
 
