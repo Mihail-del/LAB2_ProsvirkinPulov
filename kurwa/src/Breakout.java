@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 16:50 | 17.11.2025
+ * Last update: 18:35 | 17.11.2025
  */
 
 import acm.graphics.*;
@@ -179,7 +179,7 @@ public class Breakout extends GraphicsProgram {
                 score++;
                 scoreLabel.setLabel(score+"");
                 scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
-                BALL_SPEED_Y = -BALL_SPEED_Y;
+                checkSideReflect(collider);
                 bricksLeft = bricksLeft - 1;
 
                 if (bricksLeft == 0){
@@ -231,6 +231,17 @@ public class Breakout extends GraphicsProgram {
             }
 
             new Thread(() -> moveParticles()).start();
+        }
+    }
+
+    // check what side should the ball reflect
+    private void checkSideReflect(Object collider) {
+        GRoundRect brick = (GRoundRect) collider;
+        if (ball.getY()+BALL_RADIUS >= brick.getY() && ball.getY() + BALL_RADIUS <= brick.getY() + brick.getHeight()) {
+            BALL_SPEED_X = -BALL_SPEED_X;
+        }
+        else {
+            BALL_SPEED_Y = -BALL_SPEED_Y;
         }
     }
 
