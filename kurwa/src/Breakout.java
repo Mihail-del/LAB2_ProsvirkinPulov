@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 18:35 | 17.11.2025
+ * Last update: 22:15 | 17.11.2025
  */
 
 import acm.graphics.*;
@@ -26,7 +26,7 @@ public class Breakout extends GraphicsProgram {
     private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
     // Game mode
-    private static final boolean autoPlay = false;
+    private static final boolean autoPlay = true;
 
     /** ============== CONSTANTS ============== */
     //  Dimensions of the paddle
@@ -237,7 +237,7 @@ public class Breakout extends GraphicsProgram {
     // check what side should the ball reflect
     private void checkSideReflect(Object collider) {
         GRoundRect brick = (GRoundRect) collider;
-        if (ball.getY()+BALL_RADIUS >= brick.getY() && ball.getY() + BALL_RADIUS <= brick.getY() + brick.getHeight()) {
+        if (ball.getY()+BALL_RADIUS >= brick.getY()+BALL_SPEED_Y/2.0 && ball.getY()+BALL_RADIUS <= brick.getY()+brick.getHeight()+BALL_SPEED_Y/2.0) {
             BALL_SPEED_X = -BALL_SPEED_X;
         }
         else {
@@ -663,7 +663,7 @@ public class Breakout extends GraphicsProgram {
             if (e.getX() >= APPLICATION_PADDING && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH) {
                 if (actionSlider == 5) {
                     sliderBricksPadding.sliderMove(e.getX(), 7);
-                    int one_section = APPLICATION_WIDTH/70;
+                    double one_section = APPLICATION_WIDTH/70.0;
                     BRICK_Y_OFFSET = (e.getX() - APPLICATION_PADDING) / one_section + BRICK_SEP;
                     if (BRICK_Y_OFFSET>70)  BRICK_Y_OFFSET=70;
                     bricksPaddingValueLbl.setLabel((int) Math.round(BRICK_Y_OFFSET) + "");
