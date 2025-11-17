@@ -237,14 +237,14 @@ public class Breakout extends GraphicsProgram {
     private void playAgain() {
         if (!gameWon) {
         GImage lostGame = new GImage( "images/lostGame.png");
-        lostGame.setSize(400, 150);
+        lostGame.setSize(APPLICATION_WIDTH*0.8, APPLICATION_WIDTH*0.3);
         double x = getWidth()/2.0-lostGame.getWidth()/2.0;
         double y = getHeight()/2.5-lostGame.getHeight()/2.0;
         lostGame.setLocation(x, y);
         add(lostGame);}
         else {
             GImage wonGame = new GImage( "images/wonGame.png");
-            wonGame.setSize(400, 150);
+            wonGame.setSize(APPLICATION_WIDTH*0.8, APPLICATION_WIDTH*0.3);
             double x = getWidth()/2.0-wonGame.getWidth()/2.0;
             double y = getHeight()/2.5-wonGame.getHeight()/2.0;
             wonGame.setLocation(x, y);
@@ -252,12 +252,12 @@ public class Breakout extends GraphicsProgram {
         }
 
         playAgain = new GImage("images/playAgain.png");
-        playAgain.setSize(240,70);
+        playAgain.setSize(APPLICATION_WIDTH*0.7, APPLICATION_WIDTH*0.15);
         playAgain.setLocation(getWidth()/2.0 - playAgain.getWidth()/2.0, getHeight()/2.0 + playAgain.getHeight());
         add(playAgain);
 
         mainMenu = new GImage("images/mainMenu.png");
-        mainMenu.setSize(240,70);
+        mainMenu.setSize(APPLICATION_WIDTH*0.7, APPLICATION_WIDTH*0.15);
         mainMenu.setLocation(getWidth()/2.0 - mainMenu.getWidth()/2.0, playAgain.getY() + playAgain.getHeight() + 10);
         add(mainMenu);
 
