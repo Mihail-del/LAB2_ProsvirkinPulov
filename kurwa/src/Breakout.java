@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 23:24 | 17.11.2025
+ * Last update: 01:06 | 18.11.2025
  */
 
 import acm.graphics.*;
@@ -26,7 +26,7 @@ public class Breakout extends GraphicsProgram {
     private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
     // Auto game mode
-    private static final boolean autoPlay = true;
+    private static final boolean autoPlay = false;
 
     /** ============== CONSTANTS ============== */
     //  Dimensions of the paddle
@@ -139,8 +139,10 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== RUN ============== */
     public void run() {
-        configureLoadingApp();
         addMouseListeners();
+        SoundManager.loadFromResource("bounce", "/sounds/ballBounce.wav");
+        SoundManager.loadFromResource("break", "/sounds/destroyingBricks.wav");
+        configureLoadingApp();
         while (true) {
             resetAllConsts();
             configureAppMenu();
@@ -176,6 +178,7 @@ public class Breakout extends GraphicsProgram {
             Object collider = checkBallSensors();
             if (collider != null) {
                 createBrickParticles((GObject) collider);
+                SoundManager.play("break");
                 score++;
                 scoreLabel.setLabel(score+"");
                 scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
@@ -189,15 +192,19 @@ public class Breakout extends GraphicsProgram {
             }
 
             if (ball.getX()+BALL_SPEED_X <= APPLICATION_PADDING) {
+                SoundManager.play("bounce");
                 BALL_SPEED_X = -BALL_SPEED_X;
             }
             if (ball.getX() + 2 * BALL_RADIUS + BALL_SPEED_X>= APPLICATION_PADDING + APPLICATION_WIDTH) {
+                SoundManager.play("bounce");
                 BALL_SPEED_X = -BALL_SPEED_X;
             }
             if (ball.getY() +BALL_SPEED_Y <= APPLICATION_TOP_PADDING) {
+                SoundManager.play("bounce");
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
             if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0+BALL_RADIUS)  && (ball.getY() < gamePaddle.getY()-PADDLE_HEIGHT && ball.getY() >= gamePaddle.getY()-PADDLE_HEIGHT-BALL_GENERAL_SPEED)) {
+                SoundManager.play("bounce");
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
             if (ball.getY() >= APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
