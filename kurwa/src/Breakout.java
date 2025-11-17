@@ -368,6 +368,7 @@ public class Breakout extends GraphicsProgram {
     /** ============== APP CONFIGURATION ============== */
     // ===== loading menu =====
     private void configureLoadingApp(){
+        setBackground(bgColor);
         GImage imageLoading = new GImage("images/loadingScreen.png");
         imageLoading.setSize(SETTING_WINDOW_WIDTH, SETTING_WINDOW_HEIGHT);
         imageLoading.setLocation(0,0);
