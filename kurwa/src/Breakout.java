@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 01:06 | 18.11.2025
+ * Last update: 22:46 | 18.11.2025
  */
 
 import acm.graphics.*;
@@ -142,6 +142,10 @@ public class Breakout extends GraphicsProgram {
         addMouseListeners();
         SoundManager.loadFromResource("bounce", "/sounds/ballBounce.wav");
         SoundManager.loadFromResource("break", "/sounds/destroyingBricks.wav");
+        SoundManager.loadFromResource("losingLife1", "/sounds/losingLife1.wav");
+        SoundManager.loadFromResource("losingLife2", "/sounds/losingLife2.wav");
+        SoundManager.loadFromResource("winner", "/sounds/winner.wav");
+        SoundManager.loadFromResource("losing", "/sounds/losing.wav");
         configureLoadingApp();
         while (true) {
             resetAllConsts();
@@ -208,7 +212,8 @@ public class Breakout extends GraphicsProgram {
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
             if (ball.getY() >= APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
-                ball.setLocation(ball.getX(), APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);// just to check
+                ball.setLocation(ball.getX(), APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);//// just to check
+            SoundManager.play("losingLife1");
                 livesLeft --;
                 GImage heartToRemove = hearts.get(livesLeft);
                 for (int i = 0; i < 4; i++) {    // heart lost animation
@@ -255,6 +260,7 @@ public class Breakout extends GraphicsProgram {
     // showing end screen
     private void playAgain() {
         if (!gameWon) {
+            SoundManager.play("losing");
         GImage lostGame = new GImage( "images/lostGame.png");
         lostGame.setSize(APPLICATION_WIDTH*0.8, APPLICATION_WIDTH*0.3);
         double x = getWidth()/2.0-lostGame.getWidth()/2.0;
@@ -262,6 +268,7 @@ public class Breakout extends GraphicsProgram {
         lostGame.setLocation(x, y);
         add(lostGame);}
         else {
+            SoundManager.play("winner");
             GImage wonGame = new GImage( "images/wonGame.png");
             wonGame.setSize(APPLICATION_WIDTH*0.8, APPLICATION_WIDTH*0.3);
             double x = getWidth()/2.0-wonGame.getWidth()/2.0;
