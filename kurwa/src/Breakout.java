@@ -213,7 +213,7 @@ public class Breakout extends GraphicsProgram {
             }
             if (ball.getY() >= APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
                 ball.setLocation(ball.getX(), APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);//// just to check
-            SoundManager.play("losingLife1");
+            SoundManager.play("losingLife2");
                 livesLeft --;
                 GImage heartToRemove = hearts.get(livesLeft);
                 for (int i = 0; i < 4; i++) {    // heart lost animation
