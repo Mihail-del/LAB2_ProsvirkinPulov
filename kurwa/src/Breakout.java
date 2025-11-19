@@ -593,7 +593,7 @@ public class Breakout extends GraphicsProgram {
             }
 
             GObject obj = getElementAt(e.getX(), e.getY());
-            if (obj == savebtn) {
+            if (e.getX()>savebtn.getX()&&e.getX()<savebtn.getX()+savebtn.getWidth() && e.getY()>savebtn.getY()&&e.getY()<savebtn.getY()+savebtn.getHeight()) {
                 StartMenuEnabled  = false;
                 waitingContinue = false;
                 if(sound) SoundManager.play("click");
