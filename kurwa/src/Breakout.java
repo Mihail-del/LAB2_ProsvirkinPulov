@@ -68,6 +68,8 @@ public class Breakout extends GraphicsProgram {
     //  Offset of the top brick row from the top
     public static double BRICK_Y_OFFSET = (int) Math.round(BRICK_SEP);
 
+    public static boolean sound = true;
+
     /** ===== VARIABLES ====== */
     private boolean StartMenuEnabled = false;
     private boolean waitingContinue = false;
@@ -90,6 +92,7 @@ public class Breakout extends GraphicsProgram {
 
 
     GRect gameFramePreviewer;
+    GImage soundImg;
 
     GPaddle paddlePreview;
     GPaddle gamePaddle;
@@ -146,7 +149,8 @@ public class Breakout extends GraphicsProgram {
         SoundManager.loadFromResource("losingLife2", "/sounds/losingLife2.wav");
         SoundManager.loadFromResource("winner", "/sounds/winner.wav");
         SoundManager.loadFromResource("losing", "/sounds/losing.wav");
-        configureLoadingApp();
+        SoundManager.loadFromResource("click", "/sounds/click.wav");
+        //configureLoadingApp();
         while (true) {
             resetAllConsts();
             configureAppMenu();
@@ -182,7 +186,7 @@ public class Breakout extends GraphicsProgram {
             Object collider = checkBallSensors();
             if (collider != null) {
                 createBrickParticles((GObject) collider);
-                SoundManager.play("break");
+                if(sound) SoundManager.play("break");
                 score++;
                 scoreLabel.setLabel(score+"");
                 scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
@@ -196,24 +200,24 @@ public class Breakout extends GraphicsProgram {
             }
 
             if (ball.getX()+BALL_SPEED_X <= APPLICATION_PADDING) {
-                SoundManager.play("bounce");
+                if(sound) SoundManager.play("bounce");
                 BALL_SPEED_X = -BALL_SPEED_X;
             }
             if (ball.getX() + 2 * BALL_RADIUS + BALL_SPEED_X>= APPLICATION_PADDING + APPLICATION_WIDTH) {
-                SoundManager.play("bounce");
+                if(sound) SoundManager.play("bounce");
                 BALL_SPEED_X = -BALL_SPEED_X;
             }
             if (ball.getY() +BALL_SPEED_Y <= APPLICATION_TOP_PADDING) {
-                SoundManager.play("bounce");
+                if(sound) SoundManager.play("bounce");
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
             if ((ball.getX() > gamePaddle.getX()-PADDLE_WIDTH/2.0-BALL_RADIUS && ball.getX() < gamePaddle.getX()+PADDLE_WIDTH/2.0+BALL_RADIUS)  && (ball.getY() < gamePaddle.getY()-PADDLE_HEIGHT && ball.getY() >= gamePaddle.getY()-PADDLE_HEIGHT-BALL_GENERAL_SPEED)) {
-                SoundManager.play("bounce");
+                if(sound) SoundManager.play("bounce");
                 BALL_SPEED_Y = -BALL_SPEED_Y;
             }
             if (ball.getY() >= APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS) {
                 ball.setLocation(ball.getX(), APPLICATION_TOP_PADDING + APPLICATION_HEIGHT - 2 * BALL_RADIUS);//// just to check
-            SoundManager.play("losingLife2");
+                if(sound) SoundManager.play("losingLife2");
                 livesLeft --;
                 GImage heartToRemove = hearts.get(livesLeft);
                 for (int i = 0; i < 4; i++) {    // heart lost animation
@@ -260,7 +264,7 @@ public class Breakout extends GraphicsProgram {
     // showing end screen
     private void playAgain() {
         if (!gameWon) {
-            SoundManager.play("losing");
+            if(sound) SoundManager.play("losing");
         GImage lostGame = new GImage( "images/lostGame.png");
         lostGame.setSize(APPLICATION_WIDTH*0.8, APPLICATION_WIDTH*0.3);
         double x = getWidth()/2.0-lostGame.getWidth()/2.0;
@@ -268,7 +272,7 @@ public class Breakout extends GraphicsProgram {
         lostGame.setLocation(x, y);
         add(lostGame);}
         else {
-            SoundManager.play("winner");
+            if(sound) SoundManager.play("winner");
             GImage wonGame = new GImage( "images/wonGame.png");
             wonGame.setSize(APPLICATION_WIDTH*0.8, APPLICATION_WIDTH*0.3);
             double x = getWidth()/2.0-wonGame.getWidth()/2.0;
@@ -542,6 +546,7 @@ public class Breakout extends GraphicsProgram {
         bricksRowsSettings();
         bricksPaddingSettings();
         ballSpeedSettings();
+        soundSettings();
 
         preview();
         saveStartMenu();
@@ -561,27 +566,27 @@ public class Breakout extends GraphicsProgram {
         if(StartMenuEnabled) {
             if (e.getX() >= APPLICATION_PADDING - 10 && e.getX() <= APPLICATION_PADDING + APPLICATION_WIDTH + 10) {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.22 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.22 + 20) {
-                    actionSlider = 1;
+                    actionSlider = 1; if(sound) SoundManager.play("click");
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.32 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.32 + 20) {
-                    actionSlider = 2;
+                    actionSlider = 2; if(sound) SoundManager.play("click");
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.47 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.47 + 20) {
-                    actionSlider = 3;
+                    actionSlider = 3; if(sound) SoundManager.play("click");
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.57 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.57 + 20) {
-                    actionSlider = 4;
+                    actionSlider = 4; if(sound) SoundManager.play("click");
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.67 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.67 + 20) {
-                    actionSlider = 5;
+                    actionSlider = 5; if(sound) SoundManager.play("click");
                 }
 
                 if (e.getY() >= SETTING_WINDOW_HEIGHT * 0.82 - 20 && e.getY() <= SETTING_WINDOW_HEIGHT * 0.82 + 20) {
-                    actionSlider = 6;
+                    actionSlider = 6; if(sound) SoundManager.play("click");
                 }
             }
 
@@ -589,15 +594,27 @@ public class Breakout extends GraphicsProgram {
                 if (e.getY() >= SETTING_WINDOW_HEIGHT*0.92- APPLICATION_PADDING && e.getY() <= SETTING_WINDOW_HEIGHT- APPLICATION_PADDING) {
                     StartMenuEnabled  = false;
                     waitingContinue = false;
+                    if(sound) SoundManager.play("click");
                 }
             }
+
+            GObject obj = getElementAt(e.getX(), e.getY());
+            if (obj == soundImg) {
+                if(sound) SoundManager.play("click");
+                sound= !sound;
+                if(sound)   soundImg.setImage("images/volume.png");
+                else        soundImg.setImage("images/mute.png");
+                soundImg.setSize(APPLICATION_WIDTH *0.08, APPLICATION_WIDTH *0.08);
+            }
         } else if (isEndScreenActive) {
+            if(sound) SoundManager.play("click");
             GObject obj = getElementAt(e.getX(), e.getY());
             if (obj == playAgain) {
                 playAgainClicked = true;
                 isEndScreenActive = false;
             }
             else if (obj == mainMenu) {
+                if(sound) SoundManager.play("click");
                 playAgainClicked = false;
                 isEndScreenActive = false;
 
@@ -609,6 +626,7 @@ public class Breakout extends GraphicsProgram {
     public void mouseReleased(MouseEvent e) {
         if(StartMenuEnabled) {
             actionSlider = 0;
+            if(sound) SoundManager.play("click");
         }
     }
 
@@ -747,7 +765,7 @@ public class Breakout extends GraphicsProgram {
         GImage image = new GImage("images/gameSettings.png");
         double imageWidth =  APPLICATION_WIDTH *0.8;
         image.setSize(imageWidth, imageWidth*0.1);
-        image.setLocation(APPLICATION_PADDING + (APPLICATION_WIDTH -imageWidth)/2, SETTING_WINDOW_HEIGHT *0.05);
+        image.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT *0.05);
         add(image);
     }
 
@@ -882,6 +900,13 @@ public class Breakout extends GraphicsProgram {
         add(sliderBallSpeed);
     }
 
+    /* ===== SOUND ON/OFF BUTTON ===== */
+    private void soundSettings(){
+        soundImg = new GImage("images/volume.png");
+        soundImg.setSize(APPLICATION_WIDTH *0.08, APPLICATION_WIDTH *0.08);
+        soundImg.setLocation(APPLICATION_PADDING+APPLICATION_WIDTH-soundImg.getWidth(), SETTING_WINDOW_HEIGHT *0.05);
+        add(soundImg);
+    }
 
 
 
@@ -940,6 +965,7 @@ public class Breakout extends GraphicsProgram {
         isGameStarted = false;
         isEndScreenActive = false;
         playAgainClicked = false;
+        sound = true;
 
         actionSlider = 0;
         score = 0;
