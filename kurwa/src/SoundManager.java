@@ -1,3 +1,12 @@
+/*
+ * File: GBricksPreview.java
+ * -------------------
+ * Name: Mykhailo Pulov, Veronika Prosvirkin
+ * Class Leader: Veronika
+ *
+ * This file is a class for uploading and using sounds.
+ */
+
 import javax.sound.sampled.*;
 import java.net.URL;
 import java.util.Collections;

@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 22:46 | 18.11.2025
+ * Last update: 00:16 | 20.11.2025
  */
 
 import acm.graphics.*;
@@ -150,7 +150,7 @@ public class Breakout extends GraphicsProgram {
         SoundManager.loadFromResource("winner", "/sounds/winner.wav");
         SoundManager.loadFromResource("losing", "/sounds/losing.wav");
         SoundManager.loadFromResource("click", "/sounds/click.wav");
-        configureLoadingApp();
+        //configureLoadingApp();
         while (true) {
             resetAllConsts();
             configureAppMenu();
@@ -765,7 +765,7 @@ public class Breakout extends GraphicsProgram {
         GImage image = new GImage("images/gameSettings.png");
         double imageWidth =  APPLICATION_WIDTH *0.8;
         image.setSize(imageWidth, imageWidth*0.1);
-        image.setLocation(APPLICATION_PADDING+(APPLICATION_WIDTH-imageWidth)/4, SETTING_WINDOW_HEIGHT *0.05);
+        image.setLocation(APPLICATION_PADDING+(APPLICATION_WIDTH-imageWidth)/2, SETTING_WINDOW_HEIGHT *0.05);
         add(image);
     }
 
@@ -902,9 +902,15 @@ public class Breakout extends GraphicsProgram {
 
     /* ===== SOUND ON/OFF BUTTON ===== */
     private void soundSettings(){
+        GRoundRect soundImgBg = new GRoundRect(APPLICATION_PADDING+APPLICATION_WIDTH*0.90+APPLICATION_PADDING*0.6, SETTING_WINDOW_HEIGHT-APPLICATION_PADDING-APPLICATION_WIDTH*0.1, APPLICATION_WIDTH*0.1, APPLICATION_WIDTH *0.1);
+        soundImgBg.setFilled(true);
+        soundImgBg.setFillColor(bgColor);
+        add(soundImgBg);
+
+
         soundImg = new GImage("images/volume.png");
         soundImg.setSize(APPLICATION_WIDTH *0.08, APPLICATION_WIDTH *0.08);
-        soundImg.setLocation(APPLICATION_PADDING+APPLICATION_WIDTH-soundImg.getWidth(), SETTING_WINDOW_HEIGHT *0.05);
+        soundImg.setLocation(APPLICATION_PADDING+APPLICATION_WIDTH*0.91+APPLICATION_PADDING*0.6, SETTING_WINDOW_HEIGHT-APPLICATION_PADDING-soundImg.getHeight()-APPLICATION_WIDTH *0.01);
         add(soundImg);
     }
 
@@ -914,10 +920,9 @@ public class Breakout extends GraphicsProgram {
 
     /* ===== SAVE BUTTON ===== */
     private void saveStartMenu(){
-        GRect savebtn = new GRect(APPLICATION_PADDING +APPLICATION_WIDTH*0.25, SETTING_WINDOW_HEIGHT*0.92- APPLICATION_PADDING, APPLICATION_WIDTH*0.5, SETTING_WINDOW_HEIGHT*0.08);
+        GRoundRect savebtn = new GRoundRect(APPLICATION_PADDING*0.6, SETTING_WINDOW_HEIGHT-APPLICATION_PADDING-APPLICATION_WIDTH*0.1, APPLICATION_WIDTH*0.93, APPLICATION_WIDTH *0.1);
         savebtn.setFilled(true);
         savebtn.setFillColor(sliderBallColor);
-        savebtn.setColor(sliderBallColor);
         add(savebtn);
 
         GLabel savebtnLabel = new GLabel("Save settings");
