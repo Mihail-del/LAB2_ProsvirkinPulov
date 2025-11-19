@@ -765,7 +765,7 @@ public class Breakout extends GraphicsProgram {
         GImage image = new GImage("images/gameSettings.png");
         double imageWidth =  APPLICATION_WIDTH *0.8;
         image.setSize(imageWidth, imageWidth*0.1);
-        image.setLocation(APPLICATION_PADDING, SETTING_WINDOW_HEIGHT *0.05);
+        image.setLocation(APPLICATION_PADDING+(APPLICATION_WIDTH-imageWidth)/4, SETTING_WINDOW_HEIGHT *0.05);
         add(image);
     }
 
