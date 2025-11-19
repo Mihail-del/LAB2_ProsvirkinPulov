@@ -117,6 +117,8 @@ public class Breakout extends GraphicsProgram {
     GSlider sliderBallSpeed;
     GLabel ballSpeedValueLbl;
 
+    GRoundRect savebtn;
+
     /** ============== COLOR PALETTE ============== */
     public static Color bgColor = new Color(37, 51, 61);
     public static Color settingsColor = new Color(59, 82, 97);
@@ -590,15 +592,13 @@ public class Breakout extends GraphicsProgram {
                 }
             }
 
-            if (e.getX() >= APPLICATION_PADDING +APPLICATION_WIDTH*0.25 && e.getX() <= APPLICATION_PADDING +APPLICATION_WIDTH*0.75){
-                if (e.getY() >= SETTING_WINDOW_HEIGHT*0.92- APPLICATION_PADDING && e.getY() <= SETTING_WINDOW_HEIGHT- APPLICATION_PADDING) {
-                    StartMenuEnabled  = false;
-                    waitingContinue = false;
-                    if(sound) SoundManager.play("click");
-                }
+            GObject obj = getElementAt(e.getX(), e.getY());
+            if (obj == savebtn) {
+                StartMenuEnabled  = false;
+                waitingContinue = false;
+                if(sound) SoundManager.play("click");
             }
 
-            GObject obj = getElementAt(e.getX(), e.getY());
             if (obj == soundImg) {
                 if(sound) SoundManager.play("click");
                 sound= !sound;
@@ -920,7 +920,7 @@ public class Breakout extends GraphicsProgram {
 
     /* ===== SAVE BUTTON ===== */
     private void saveStartMenu(){
-        GRoundRect savebtn = new GRoundRect(APPLICATION_PADDING*0.6, SETTING_WINDOW_HEIGHT-APPLICATION_PADDING-APPLICATION_WIDTH*0.1, APPLICATION_WIDTH*0.93, APPLICATION_WIDTH *0.1);
+        savebtn = new GRoundRect(APPLICATION_PADDING*0.6, SETTING_WINDOW_HEIGHT-APPLICATION_PADDING-APPLICATION_WIDTH*0.1, APPLICATION_WIDTH*0.93, APPLICATION_WIDTH *0.1);
         savebtn.setFilled(true);
         savebtn.setFillColor(sliderBallColor);
         add(savebtn);
