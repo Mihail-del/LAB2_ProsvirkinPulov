@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 14:32 | 20.11.2025
+ * Last update: 00:25 | 21.11.2025
  */
 
 import acm.graphics.*;
@@ -224,6 +224,7 @@ public class Breakout extends GraphicsProgram {
                 if(sound) SoundManager.play("losingLife2");
                 livesLeft --;
                 GImage heartToRemove = hearts.get(livesLeft);
+                hearts.remove(heartToRemove);
                 for (int i = 0; i < 4; i++) {    // heart lost animation
                     heartToRemove.setVisible(false);
                     pause(100);
@@ -285,8 +286,22 @@ public class Breakout extends GraphicsProgram {
                     remove(bonusHeart);
                     bonusHeart = null;
 
-                    // Сюда допиши появления иконки сердца в нашей рамке
+                    // adding a heart
+                    GImage heart = new GImage("heart.png");
+                    heart.setSize(APPLICATION_TOP_PADDING *0.6, APPLICATION_TOP_PADDING *0.6);
+                    double x = APPLICATION_PADDING *1.3 + (heart.getWidth() + APPLICATION_PADDING *0.3)* (livesLeft);
+                    double y = APPLICATION_TOP_PADDING *0.2;
+                    heart.setLocation(x, y);
                     livesLeft++;
+                    hearts.add(heart);
+                    add(heart);
+                    // heart adding animation
+                    for (int i = 0; i < 4; i++) {
+                        heart.setVisible(false);
+                        pause(100);
+                        heart.setVisible(true);
+                        pause(100);
+                    }
                 }
             }
         }
