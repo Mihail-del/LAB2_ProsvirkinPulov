@@ -153,7 +153,7 @@ public class Breakout extends GraphicsProgram {
         SoundManager.loadFromResource("winner", "/sounds/winner.wav");
         SoundManager.loadFromResource("losing", "/sounds/losing.wav");
         SoundManager.loadFromResource("click", "/sounds/click.wav");
-        //configureLoadingApp();
+        configureLoadingApp();
         while (true) {
             resetAllConsts();
             configureAppMenu();
