@@ -183,7 +183,7 @@ public class Breakout extends GraphicsProgram {
     private void playGame() {
         while (isGameStarted){
             ball.move(BALL_SPEED_X, BALL_SPEED_Y);
-            bonusHeartActions();
+            bonusHeartMove();
             if (autoPlay)
                 gamePaddle.setLocation(ball.getX(), gamePaddle.getY());
             pause(BALL_PAUSE);
@@ -196,6 +196,8 @@ public class Breakout extends GraphicsProgram {
                 scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
                 checkSideReflect(collider);
                 bricksLeft = bricksLeft - 1;
+                bonusHeartCreate((GObject) collider);
+
 
                 if (bricksLeft == 0){
                     isGameStarted = false; // game stopped
@@ -255,53 +257,58 @@ public class Breakout extends GraphicsProgram {
         }
     }
 
-    // bonus heart
-    private void bonusHeartActions(){
+    // bonus heart create
+    private void bonusHeartCreate(GObject collider){
         if (livesLeft<3){
             if (bonusHeart == null) {
-                double rand = Math.round(Math.random()*1000)/1000.0;
-                if (rand == 0.001) {
+                double rand = Math.round(Math.random()*10)/10.0;
+                if (rand == 0.1) {
                     bonusHeart = new GImage("images/heart.png");
                     bonusHeart.setSize(APPLICATION_WIDTH*0.07, APPLICATION_WIDTH*0.07);
-                    bonusHeart.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH*0.1 + Math.random()*APPLICATION_WIDTH*0.8, APPLICATION_TOP_PADDING);
+                    bonusHeart.setLocation(collider.getX()+collider.getWidth()/2, collider.getY()+collider.getHeight()/2);
                     add(bonusHeart);
                 }
-            } else {
-                bonusHeart.move(0, 2);
-                // check out of game
-                if (bonusHeart.getY()+bonusHeart.getHeight()>APPLICATION_TOP_PADDING+APPLICATION_HEIGHT) {
-                    for (int i = 0; i < 4; i++) {    // ball lost animation
-                        bonusHeart.setVisible(false);
-                        pause(100);
-                        bonusHeart.setVisible(true);
-                        pause(100);
-                    }
-                    remove(bonusHeart);
-                    bonusHeart = null;
-                    return;
+            }
+        }
+    }
+
+    // bonus heart move
+    private void bonusHeartMove(){
+        if (bonusHeart != null) {
+            bonusHeart.move(0, 2);
+            // check out of game
+            if (bonusHeart.getY()+bonusHeart.getHeight()>APPLICATION_TOP_PADDING+APPLICATION_HEIGHT) {
+                for (int i = 0; i < 4; i++) {    // ball lost animation
+                    bonusHeart.setVisible(false);
+                    pause(100);
+                    bonusHeart.setVisible(true);
+                    pause(100);
                 }
+                remove(bonusHeart);
+                bonusHeart = null;
+                return;
+            }
 
-                // check paddle catch
-                if (getElementAt(bonusHeart.getX()+bonusHeart.getWidth()/2, bonusHeart.getY()+bonusHeart.getHeight())==gamePaddle){
-                    remove(bonusHeart);
-                    bonusHeart = null;
+            // check paddle catch
+            if (getElementAt(bonusHeart.getX()+bonusHeart.getWidth()/2, bonusHeart.getY()+bonusHeart.getHeight())==gamePaddle){
+                remove(bonusHeart);
+                bonusHeart = null;
 
-                    // adding a heart
-                    GImage heart = new GImage("heart.png");
-                    heart.setSize(APPLICATION_TOP_PADDING *0.6, APPLICATION_TOP_PADDING *0.6);
-                    double x = APPLICATION_PADDING *1.3 + (heart.getWidth() + APPLICATION_PADDING *0.3)* (livesLeft);
-                    double y = APPLICATION_TOP_PADDING *0.2;
-                    heart.setLocation(x, y);
-                    livesLeft++;
-                    hearts.add(heart);
-                    add(heart);
-                    // heart adding animation
-                    for (int i = 0; i < 4; i++) {
-                        heart.setVisible(false);
-                        pause(100);
-                        heart.setVisible(true);
-                        pause(100);
-                    }
+                // adding a heart
+                GImage heart = new GImage("heart.png");
+                heart.setSize(APPLICATION_TOP_PADDING *0.6, APPLICATION_TOP_PADDING *0.6);
+                double x = APPLICATION_PADDING *1.3 + (heart.getWidth() + APPLICATION_PADDING *0.3)* (livesLeft);
+                double y = APPLICATION_TOP_PADDING *0.2;
+                heart.setLocation(x, y);
+                livesLeft++;
+                hearts.add(heart);
+                add(heart);
+                // heart adding animation
+                for (int i = 0; i < 4; i++) {
+                    heart.setVisible(false);
+                    pause(100);
+                    heart.setVisible(true);
+                    pause(100);
                 }
             }
         }
