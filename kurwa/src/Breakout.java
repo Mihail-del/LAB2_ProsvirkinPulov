@@ -98,6 +98,8 @@ public class Breakout extends GraphicsProgram {
     GPaddle gamePaddle;
     GOval ball;
     GImage bonusHeart;
+    GImage bonusScore;
+    int bonusScoreQuant;
     GSlider sliderPaddleWidth;
     GLabel paddleWidthValueLbl;
     GSlider sliderPaddlePadding;
@@ -184,6 +186,7 @@ public class Breakout extends GraphicsProgram {
         while (isGameStarted){
             ball.move(BALL_SPEED_X, BALL_SPEED_Y);
             bonusHeartMove();
+            bonusScoreMove();
             if (autoPlay)
                 gamePaddle.setLocation(ball.getX(), gamePaddle.getY());
             pause(BALL_PAUSE);
@@ -197,6 +200,7 @@ public class Breakout extends GraphicsProgram {
                 checkSideReflect(collider);
                 bricksLeft = bricksLeft - 1;
                 bonusHeartCreate((GObject) collider);
+                bonusScoreCreate((GObject) collider);
 
 
                 if (bricksLeft == 0){
@@ -290,7 +294,9 @@ public class Breakout extends GraphicsProgram {
             }
 
             // check paddle catch
-            if (getElementAt(bonusHeart.getX()+bonusHeart.getWidth()/2, bonusHeart.getY()+bonusHeart.getHeight())==gamePaddle){
+            GRectangle hr = bonusHeart.getBounds();
+            GRectangle pd = gamePaddle.getBounds();
+            if (hr.intersects(pd)) {
                 remove(bonusHeart);
                 bonusHeart = null;
 
@@ -310,6 +316,61 @@ public class Breakout extends GraphicsProgram {
                     heart.setVisible(true);
                     pause(100);
                 }
+            }
+        }
+    }
+
+    // bonus score create
+    private void bonusScoreCreate(GObject collider){
+        if (bonusScore == null) {
+            double rand = Math.round(Math.random()*10)/10.0;
+            if (rand <= 0.6) {
+                double random = Math.round(Math.random()*100)/100.0;
+                if (random <= 0.05) {
+                    bonusScoreQuant = 100;
+                    bonusScore = new GImage("images/plusHund.png");
+                    bonusScore.setSize(APPLICATION_WIDTH * 0.1, APPLICATION_WIDTH * 0.1 * 340 / 900);
+                } else if (random <= 0.15) {
+                    bonusScoreQuant = 50;
+                    bonusScore = new GImage("images/plusFifty.png");
+                    bonusScore.setSize(APPLICATION_WIDTH * 0.09, APPLICATION_WIDTH * 0.09 * 400 / 740);
+                } else if (random <= 0.45) {
+                    bonusScoreQuant = 10;
+                    bonusScore = new GImage("images/plusTen.png");
+                    bonusScore.setSize(APPLICATION_WIDTH * 0.08, APPLICATION_WIDTH * 0.08 * 400 / 780);
+                } else {
+                    bonusScoreQuant = 5;
+                    bonusScore = new GImage("images/plusFive.png");
+                    bonusScore.setSize(APPLICATION_WIDTH * 0.06, APPLICATION_WIDTH * 0.06 * 500 / 670);
+                }
+                bonusScore.setLocation(collider.getX() + collider.getWidth() / 2, collider.getY() + collider.getHeight() / 2);
+                add(bonusScore);
+            }
+        }
+    }
+
+    // bonus heart move
+    private void bonusScoreMove(){
+        if (bonusScore != null) {
+            bonusScore.move(0, 2);
+            // check out of game
+            if (bonusScore.getY()+bonusScore.getHeight()>APPLICATION_TOP_PADDING+APPLICATION_HEIGHT) {
+                remove(bonusScore);
+                bonusScore = null;
+                return;
+            }
+
+            // check paddle catch
+            GRectangle sc = bonusScore.getBounds();
+            GRectangle pd = gamePaddle.getBounds();
+            if (sc.intersects(pd)) {
+                remove(bonusScore);
+                bonusScore = null;
+
+                // adding a score
+                score+=bonusScoreQuant;
+                scoreLabel.setLabel(score+"");
+                scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
             }
         }
     }
@@ -441,7 +502,7 @@ public class Breakout extends GraphicsProgram {
 
     // checks if this ia a brick
     private boolean objectForAction(GObject obj){
-        return obj != null && obj != ball && obj != gamePaddle && obj !=bonusHeart && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        return obj != null && obj != ball && obj != gamePaddle && obj !=bonusHeart && obj !=bonusScore && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
     }
 
 
