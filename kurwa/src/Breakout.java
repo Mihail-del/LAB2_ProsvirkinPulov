@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 00:16 | 20.11.2025
+ * Last update: 14:32 | 20.11.2025
  */
 
 import acm.graphics.*;
@@ -97,6 +97,7 @@ public class Breakout extends GraphicsProgram {
     GPaddle paddlePreview;
     GPaddle gamePaddle;
     GOval ball;
+    GImage bonusHeart;
     GSlider sliderPaddleWidth;
     GLabel paddleWidthValueLbl;
     GSlider sliderPaddlePadding;
@@ -152,7 +153,7 @@ public class Breakout extends GraphicsProgram {
         SoundManager.loadFromResource("winner", "/sounds/winner.wav");
         SoundManager.loadFromResource("losing", "/sounds/losing.wav");
         SoundManager.loadFromResource("click", "/sounds/click.wav");
-        configureLoadingApp();
+        //configureLoadingApp();
         while (true) {
             resetAllConsts();
             configureAppMenu();
@@ -182,6 +183,7 @@ public class Breakout extends GraphicsProgram {
     private void playGame() {
         while (isGameStarted){
             ball.move(BALL_SPEED_X, BALL_SPEED_Y);
+            bonusHeartActions();
             if (autoPlay)
                 gamePaddle.setLocation(ball.getX(), gamePaddle.getY());
             pause(BALL_PAUSE);
@@ -249,6 +251,47 @@ public class Breakout extends GraphicsProgram {
             }
 
             new Thread(() -> moveParticles()).start();
+        }
+    }
+
+    // bonus heart
+    private void bonusHeartActions(){
+        if (livesLeft<3){
+            if (bonusHeart == null) {
+                double rand = Math.round(Math.random()*1000)/1000.0;
+                println(rand);
+                if (rand == 0.001) {
+                    bonusHeart = new GImage("images/heart.png");
+                    bonusHeart.setSize(APPLICATION_WIDTH*0.05, APPLICATION_WIDTH*0.05);
+                    bonusHeart.setLocation(400, APPLICATION_TOP_PADDING);
+                    add(bonusHeart);
+                }
+            } else {
+                bonusHeart.move(0, 1);
+                println(bonusHeart.toString());
+
+                // check out of game
+                if (bonusHeart.getY()+bonusHeart.getHeight()>APPLICATION_TOP_PADDING+APPLICATION_HEIGHT) {
+                    for (int i = 0; i < 4; i++) {    // ball lost animation
+                        bonusHeart.setVisible(false);
+                        pause(100);
+                        bonusHeart.setVisible(true);
+                        pause(100);
+                    }
+                    remove(bonusHeart);
+                    bonusHeart = null;
+                    return;
+                }
+
+                // check paddle catch
+                if (getElementAt(bonusHeart.getX()+bonusHeart.getWidth()/2, bonusHeart.getY()+bonusHeart.getHeight())==gamePaddle){
+                    remove(bonusHeart);
+                    bonusHeart = null;
+
+                    // Сюда допиши появления иконки сердца в нашей рамке
+                    livesLeft++;
+                }
+            }
         }
     }
 
@@ -379,7 +422,7 @@ public class Breakout extends GraphicsProgram {
 
     // checks if this ia a brick
     private boolean objectForAction(GObject obj){
-        return obj != null && obj != ball && obj != gamePaddle && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
+        return obj != null && obj != ball && obj != gamePaddle && obj !=bonusHeart && obj != gamingField && !hearts.contains(obj) && !particlesList.contains(obj);
     }
 
 
