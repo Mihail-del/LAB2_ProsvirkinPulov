@@ -259,17 +259,14 @@ public class Breakout extends GraphicsProgram {
         if (livesLeft<3){
             if (bonusHeart == null) {
                 double rand = Math.round(Math.random()*1000)/1000.0;
-                println(rand);
                 if (rand == 0.001) {
                     bonusHeart = new GImage("images/heart.png");
-                    bonusHeart.setSize(APPLICATION_WIDTH*0.05, APPLICATION_WIDTH*0.05);
-                    bonusHeart.setLocation(400, APPLICATION_TOP_PADDING);
+                    bonusHeart.setSize(APPLICATION_WIDTH*0.07, APPLICATION_WIDTH*0.07);
+                    bonusHeart.setLocation(APPLICATION_PADDING + APPLICATION_WIDTH*0.1 + Math.random()*APPLICATION_WIDTH*0.8, APPLICATION_TOP_PADDING);
                     add(bonusHeart);
                 }
             } else {
-                bonusHeart.move(0, 1);
-                println(bonusHeart.toString());
-
+                bonusHeart.move(0, 2);
                 // check out of game
                 if (bonusHeart.getY()+bonusHeart.getHeight()>APPLICATION_TOP_PADDING+APPLICATION_HEIGHT) {
                     for (int i = 0; i < 4; i++) {    // ball lost animation
