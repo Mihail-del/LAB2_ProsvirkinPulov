@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 01:39 | 21.11.2025
+ * Last update: 13:00 | 21.11.2025
  */
 
 import acm.graphics.*;
@@ -147,7 +147,6 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== RUN ============== */
     public void run() {
-        addMouseListeners();
         SoundManager.loadFromResource("bounce", "/sounds/ballBounce.wav");
         SoundManager.loadFromResource("break", "/sounds/destroyingBricks.wav");
         SoundManager.loadFromResource("losingLife1", "/sounds/losingLife1.wav");
@@ -155,7 +154,10 @@ public class Breakout extends GraphicsProgram {
         SoundManager.loadFromResource("winner", "/sounds/winner.wav");
         SoundManager.loadFromResource("losing", "/sounds/losing.wav");
         SoundManager.loadFromResource("click", "/sounds/click.wav");
+        SoundManager.loadFromResource("bonusHeart", "/sounds/bonusHeart.wav");
+        SoundManager.loadFromResource("bonusScore", "/sounds/bonusScore.wav");
         configureLoadingApp();
+        addMouseListeners();
         while (true) {
             resetAllConsts();
             configureAppMenu();
@@ -282,12 +284,6 @@ public class Breakout extends GraphicsProgram {
             bonusHeart.move(0, 2);
             // check out of game
             if (bonusHeart.getY()+bonusHeart.getHeight()>APPLICATION_TOP_PADDING+APPLICATION_HEIGHT) {
-                for (int i = 0; i < 4; i++) {    // ball lost animation
-                    bonusHeart.setVisible(false);
-                    pause(100);
-                    bonusHeart.setVisible(true);
-                    pause(100);
-                }
                 remove(bonusHeart);
                 bonusHeart = null;
                 return;
@@ -306,6 +302,7 @@ public class Breakout extends GraphicsProgram {
                 double x = APPLICATION_PADDING *1.3 + (heart.getWidth() + APPLICATION_PADDING *0.3)* (livesLeft);
                 double y = APPLICATION_TOP_PADDING *0.2;
                 heart.setLocation(x, y);
+                if(sound) SoundManager.play("bonusHeart");
                 livesLeft++;
                 hearts.add(heart);
                 add(heart);
@@ -368,6 +365,7 @@ public class Breakout extends GraphicsProgram {
                 bonusScore = null;
 
                 // adding a score
+                if(sound) SoundManager.play("bonusScore");
                 score+=bonusScoreQuant;
                 scoreLabel.setLabel(score+"");
                 scoreLabel.setLocation((int) Math.round(scoreFrame.getX()+(scoreFrame.getWidth()-scoreLabel.getWidth())/2), (int) Math.round(APPLICATION_TOP_PADDING*0.1+scoreLabel.getHeight()));
@@ -560,6 +558,7 @@ public class Breakout extends GraphicsProgram {
         particleSpeedsX.clear();
         particleSpeedsY.clear();
         livesLeft = LIVES;
+        BALL_SPEED_Y = -BALL_GENERAL_SPEED;
         score = 0;
         calcSpeedX();
         isGameStarted = true;
@@ -848,7 +847,7 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== MOVING MOUSE ACTIONS WITH PADDLE ============== */
     public void mouseMoved(MouseEvent e){
-        if (isGameStarted && !autoPlay){
+        if (isGameStarted && !autoPlay && gamePaddle != null) {
             double newX = e.getX();
             double currentY = gamePaddle.getY();
 
