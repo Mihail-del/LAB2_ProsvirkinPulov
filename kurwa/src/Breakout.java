@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 16:41 | 21.11.2025
+ * Last update: 22:34 | 21.11.2025
  */
 
 import acm.graphics.*;
@@ -746,7 +746,7 @@ public class Breakout extends GraphicsProgram {
 
     /** ============== RELEASED MOUSE ACTIONS ============== */
     public void mouseReleased(MouseEvent e) {
-        if(StartMenuEnabled) {
+        if(StartMenuEnabled && actionSlider != 0) {
             actionSlider = 0;
             if(sound) SoundManager.play("click");
         }
@@ -843,7 +843,6 @@ public class Breakout extends GraphicsProgram {
             }
         }
     }
-
 
     /** ============== MOVING MOUSE ACTIONS WITH PADDLE ============== */
     public void mouseMoved(MouseEvent e){
