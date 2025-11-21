@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 13:00 | 21.11.2025
+ * Last update: 16:41 | 21.11.2025
  */
 
 import acm.graphics.*;
@@ -319,7 +319,7 @@ public class Breakout extends GraphicsProgram {
 
     // bonus score create
     private void bonusScoreCreate(GObject collider){
-        if (bonusScore == null) {
+        if (bonusScore == null && bonusHeart == null) {
             double rand = Math.round(Math.random()*10)/10.0;
             if (rand <= 0.6) {
                 double random = Math.round(Math.random()*100)/100.0;
