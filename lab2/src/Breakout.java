@@ -5,7 +5,7 @@
  * Class Leader: Both
  *
  * This file is a main one in the game of Breakout.
- * Last update: 22:34 | 21.11.2025
+ * Last update: 16:21 | 24.11.2025
  */
 
 import acm.graphics.*;
@@ -25,7 +25,7 @@ public class Breakout extends GraphicsProgram {
     private static int SETTING_WINDOW_WIDTH = 2*APPLICATION_WIDTH+ 3* APPLICATION_PADDING;
     private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
-    // Auto play game mode
+    // Autoplay game mode
     private static final boolean autoPlay = false;
 
     /** ============== CONSTANTS ============== */
