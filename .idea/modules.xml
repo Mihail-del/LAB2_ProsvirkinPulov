@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GPaddle/GPaddle.iml" filepath="$PROJECT_DIR$/GPaddle/GPaddle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/LAB2_ProsvirkinPulov.iml" filepath="$PROJECT_DIR$/.idea/LAB2_ProsvirkinPulov.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kurwa/kurwa.iml" filepath="$PROJECT_DIR$/kurwa/kurwa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab2/lab2.iml" filepath="$PROJECT_DIR$/lab2/lab2.iml" />
     </modules>
   </component>
 </project>
