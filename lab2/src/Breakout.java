@@ -25,7 +25,7 @@ public class Breakout extends GraphicsProgram {
     private static int SETTING_WINDOW_WIDTH = 2*APPLICATION_WIDTH+ 3* APPLICATION_PADDING;
     private static int SETTING_WINDOW_HEIGHT = APPLICATION_HEIGHT + 2* APPLICATION_PADDING;
 
-    // Auto game mode
+    // Auto play game mode
     private static final boolean autoPlay = false;
 
     /** ============== CONSTANTS ============== */
