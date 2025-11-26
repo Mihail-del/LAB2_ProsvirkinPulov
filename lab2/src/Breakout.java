@@ -16,6 +16,11 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class Breakout extends GraphicsProgram {
+    public static void main(String[] args) {
+        Breakout b = new Breakout();
+        b.start(args);
+    }
+
     /** ============== CONSTANTS SIZES ============== */
     //  Width and height of application window in pixels
     public static int APPLICATION_WIDTH = 500;
