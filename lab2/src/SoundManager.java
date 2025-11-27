@@ -1,5 +1,5 @@
 /*
- * File: GBricksPreview.java
+ * File: SoundManager.java
  * -------------------
  * Name: Mykhailo Pulov, Veronika Prosvirkin
  * Class Leader: Veronika
